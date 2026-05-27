@@ -224,9 +224,10 @@ body.dark.edit-mode .right [contenteditable]{border-bottom-color:rgba(255,255,25
 .m-save:hover{filter:brightness(1.12)}
 
 /* Edit FAB */
-.edit-fab{position:fixed;bottom:24px;right:24px;width:46px;height:46px;border-radius:50%;background:var(--nav-active);color:#fff;border:none;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:background .2s,transform .15s}
+.edit-fab{position:fixed;bottom:24px;right:24px;width:46px;height:46px;border-radius:50%;background:var(--nav-active);color:#fff;border:none;font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:background .2s,transform .15s}
 .edit-fab:hover{transform:scale(1.08)}
 .edit-fab.active{background:#16a34a}
+.edit-mode .edit-fab{display:flex}
 .edit-badge{position:absolute;top:-3px;right:-3px;background:#ef4444;color:#fff;border-radius:999px;font-size:8px;font-weight:700;padding:1px 5px;border:2px solid var(--bg);display:none;white-space:nowrap}
 .edit-mode .edit-badge{display:block}
 
@@ -239,10 +240,50 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
 #photo-input{display:none}
+
+/* ── PASSWORD MODAL ── */
+.pw-modal-bg{position:fixed;inset:0;background:var(--modal-overlay);z-index:700;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.pw-modal-bg.open{display:flex}
+.pw-modal{background:var(--modal-bg);border-radius:16px;padding:28px;width:100%;max-width:340px;box-shadow:0 24px 64px rgba(0,0,0,.3);animation:modalIn .18s ease}
+.pw-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.pw-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+.pw-input-wrap{position:relative;margin-bottom:10px}
+.pw-inp{width:100%;background:var(--inp);border:1px solid var(--inp-border);border-radius:8px;padding:10px 40px 10px 12px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none;transition:border-color .14s}
+.pw-inp:focus{border-color:var(--teal)}
+.pw-inp.error{border-color:#dc2626;animation:shake .3s}
+.pw-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);padding:4px;font-size:16px}
+.pw-error{font-size:12px;color:#dc2626;margin-bottom:14px;display:none}
+.pw-error.show{display:block}
+.pw-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+.pw-cancel{background:transparent;border:1px solid var(--border);border-radius:8px;padding:8px 18px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text2);cursor:pointer}
+.pw-submit{background:var(--nav-active);color:#fff;border:none;border-radius:8px;padding:8px 22px;font-size:13px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:background .14s}
+.pw-submit:hover{filter:brightness(1.1)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* Change password section in settings */
+.pw-change-wrap{display:flex;flex-direction:column;gap:10px;max-width:340px}
 </style>
 </head>
 <body>
 <input type="file" id="photo-input" accept="image/*">
+
+<!-- ── PASSWORD MODAL ── -->
+<div class="pw-modal-bg" id="pw-modal-bg">
+  <div class="pw-modal">
+    <div style="font-size:28px;margin-bottom:10px;text-align:center">🔐</div>
+    <div class="pw-title" style="text-align:center">Admin access</div>
+    <div class="pw-sub" style="text-align:center">Enter your password to edit this site</div>
+    <div class="pw-input-wrap">
+      <input class="pw-inp" type="password" id="pw-inp" placeholder="Password" autocomplete="current-password">
+      <button class="pw-eye" id="pw-eye" type="button" tabindex="-1">👁</button>
+    </div>
+    <div class="pw-error" id="pw-error">Incorrect password. Try again.</div>
+    <div class="pw-actions">
+      <button class="pw-cancel" id="pw-cancel">Cancel</button>
+      <button class="pw-submit" id="pw-submit">Unlock ✓</button>
+    </div>
+  </div>
+</div>
 
 <!-- ── MODAL ── -->
 <div class="modal-bg" id="modal-bg">
@@ -388,6 +429,16 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
           <button class="s-btn s-btn-danger" id="set-reset">↺ Reset all</button>
         </div>
         <input type="file" id="set-import-file" accept=".json" style="display:none">
+      </div>
+      <div class="settings-block">
+        <div class="settings-blk-title">🔐 Edit password</div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">Change the password required to enter edit mode. Only you should know this.</p>
+        <div class="pw-change-wrap">
+          <div><label class="form-lbl">Current password</label><input class="form-inp" type="password" id="set-pw-cur" placeholder="Current password"></div>
+          <div><label class="form-lbl">New password</label><input class="form-inp" type="password" id="set-pw-new" placeholder="New password (min 6 chars)"></div>
+          <div><label class="form-lbl">Confirm new password</label><input class="form-inp" type="password" id="set-pw-con" placeholder="Repeat new password"></div>
+        </div>
+        <div class="btn-row"><button class="s-btn s-btn-primary" id="set-change-pw">Change password</button></div>
       </div>
       <div class="settings-block">
         <div class="settings-blk-title">🚀 GitHub Pages + Cloudflare DNS setup</div>
@@ -804,22 +855,120 @@ document.getElementById('btn-add-skill').addEventListener('click',()=>{
 });
 
 // ═══════════════════════════════
+// PASSWORD SYSTEM (SHA-256)
+// ═══════════════════════════════
+const DEFAULT_PW = 'subarna123';
+
+async function hashPw(pw){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function getStoredHash(){
+  return localStorage.getItem('sb_pw_hash') || await hashPw(DEFAULT_PW);
+}
+async function checkPw(input){
+  return await hashPw(input) === await getStoredHash();
+}
+
+// ═══════════════════════════════
+// SECRET TRIGGERS  (3 ways to open the hidden login)
+// ═══════════════════════════════
+
+// --- TRIGGER 1: type "zzz" anywhere on the page (not in an input) ---
+let keyBuf = '';
+document.addEventListener('keydown', e => {
+  if(e.target.matches('input,textarea,[contenteditable]')) return;
+  keyBuf += e.key.toLowerCase();
+  if(keyBuf.length > 6) keyBuf = keyBuf.slice(-6);
+  if(keyBuf.endsWith('zzz')) { keyBuf=''; openPwModal(); }
+});
+
+// --- TRIGGER 2: click the profile photo exactly 5 times within 3 seconds ---
+let avClicks = 0, avTimer;
+document.getElementById('av-wrap').addEventListener('click', () => {
+  if(editMode) return; // already in edit mode, let normal upload logic handle
+  avClicks++;
+  clearTimeout(avTimer);
+  avTimer = setTimeout(() => avClicks = 0, 3000);
+  if(avClicks >= 5){ avClicks = 0; openPwModal(); }
+});
+
+// --- TRIGGER 3: Konami-style — type the secret URL hash ---
+// visiting  yoursite.com/#admin  also opens the password modal
+if(window.location.hash === '#admin'){
+  history.replaceState(null, '', window.location.pathname);
+  setTimeout(() => openPwModal(), 400);
+}
+window.addEventListener('hashchange', () => {
+  if(window.location.hash === '#admin'){
+    history.replaceState(null, '', window.location.pathname);
+    openPwModal();
+  }
+});
+
+// ═══════════════════════════════
+// PASSWORD MODAL LOGIC
+// ═══════════════════════════════
+function openPwModal(){
+  if(editMode){ toggleEdit(); return; } // if already in edit, clicking save saves
+  const bg  = document.getElementById('pw-modal-bg');
+  const inp = document.getElementById('pw-inp');
+  const err = document.getElementById('pw-error');
+  inp.value=''; inp.type='password';
+  err.classList.remove('show'); inp.classList.remove('error');
+  bg.classList.add('open');
+  setTimeout(()=>inp.focus(), 80);
+}
+
+async function submitPassword(){
+  const inp = document.getElementById('pw-inp');
+  const err = document.getElementById('pw-error');
+  const val = inp.value.trim();
+  if(!val){ inp.classList.add('error'); return; }
+  const ok = await checkPw(val);
+  if(ok){
+    document.getElementById('pw-modal-bg').classList.remove('open');
+    activateEditMode();
+  } else {
+    inp.value='';
+    inp.classList.add('error');
+    err.classList.add('show');
+    setTimeout(()=>inp.classList.remove('error'), 400);
+    inp.focus();
+  }
+}
+
+function activateEditMode(){
+  editMode = true;
+  document.body.classList.add('edit-mode');
+  document.getElementById('edit-fab').classList.add('active');
+  document.getElementById('fab-ico').textContent='✓';
+  document.querySelectorAll('[contenteditable]').forEach(e=>e.contentEditable='true');
+  toast('🔓 Edit mode unlocked — click ✓ to save changes');
+}
+
+document.getElementById('pw-submit').addEventListener('click', submitPassword);
+document.getElementById('pw-cancel').addEventListener('click', ()=>document.getElementById('pw-modal-bg').classList.remove('open'));
+document.getElementById('pw-modal-bg').addEventListener('click', e=>{ if(e.target===document.getElementById('pw-modal-bg')) document.getElementById('pw-modal-bg').classList.remove('open'); });
+document.getElementById('pw-inp').addEventListener('keydown', e=>{ if(e.key==='Enter') submitPassword(); if(e.key==='Escape') document.getElementById('pw-modal-bg').classList.remove('open'); });
+document.getElementById('pw-eye').addEventListener('click', ()=>{
+  const inp=document.getElementById('pw-inp');
+  inp.type = inp.type==='password'?'text':'password';
+  document.getElementById('pw-eye').textContent = inp.type==='password'?'👁':'🙈';
+});
+
+// ═══════════════════════════════
 // EDIT MODE
 // ═══════════════════════════════
 function toggleEdit(){
   if(editMode){
-    collectEdits();save();
-    editMode=false;document.body.classList.remove('edit-mode');
+    collectEdits(); save();
+    editMode=false;
+    document.body.classList.remove('edit-mode');
     document.getElementById('edit-fab').classList.remove('active');
     document.getElementById('fab-ico').textContent='✎';
     document.querySelectorAll('[contenteditable]').forEach(e=>e.contentEditable='false');
-    render();toast('All changes saved ✓');
-  }else{
-    editMode=true;document.body.classList.add('edit-mode');
-    document.getElementById('edit-fab').classList.add('active');
-    document.getElementById('fab-ico').textContent='✓';
-    document.querySelectorAll('[contenteditable]').forEach(e=>e.contentEditable='true');
-    toast('Edit mode — click any text to edit it');
+    render(); toast('All changes saved ✓');
   }
 }
 
@@ -841,7 +990,7 @@ function collectEdits(){
 }
 
 function gT(id){const e=document.getElementById(id);return e?e.textContent.trim():'';}
-document.getElementById('edit-fab').addEventListener('click',toggleEdit);
+document.getElementById('edit-fab').addEventListener('click', toggleEdit);
 
 // ═══════════════════════════════
 // PHOTO
@@ -891,6 +1040,24 @@ document.getElementById('set-import-file').addEventListener('change',e=>{
 document.getElementById('set-reset').addEventListener('click',()=>{
   if(!confirm('Reset everything to defaults?'))return;
   localStorage.removeItem('sb4');state={...D};render();toast('Reset done');
+});
+
+// Change password
+document.getElementById('set-change-pw').addEventListener('click', async ()=>{
+  const cur = document.getElementById('set-pw-cur').value;
+  const nw  = document.getElementById('set-pw-new').value;
+  const con = document.getElementById('set-pw-con').value;
+  if(!cur||!nw||!con){ toast('Please fill all three password fields ⚠'); return; }
+  if(nw.length < 6){ toast('New password must be at least 6 characters ⚠'); return; }
+  if(nw !== con){ toast('New passwords do not match ⚠'); return; }
+  const ok = await checkPw(cur);
+  if(!ok){ toast('Current password is incorrect ⚠'); return; }
+  const newHash = await hashPw(nw);
+  localStorage.setItem('sb_pw_hash', newHash);
+  document.getElementById('set-pw-cur').value='';
+  document.getElementById('set-pw-new').value='';
+  document.getElementById('set-pw-con').value='';
+  toast('Password changed successfully ✓');
 });
 
 // ═══════════════════════════════
