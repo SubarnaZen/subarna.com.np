@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>subarna.com.np</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#eceae6;--divider:#d4d1cc;--nav-active:#736c66;--nav-inactive:#e2dfd9;
+  --nav-inactive-hover:#d8d5cf;--text:#1c1917;--text2:#6b6560;--text3:#a8a09a;
+  --teal:#0d9488;--teal-bg:#ccfbf1;--teal-text:#0f766e;
+  --green-bg:#dcfce7;--green-text:#15803d;
+  --blue-bg:#dbeafe;--blue-text:#1d4ed8;
+  --amber-bg:#fef3c7;--amber-text:#92400e;
+  --red-bg:#fee2e2;--red-text:#991b1b;
+  --purple-bg:#ede9fe;--purple-text:#6d28d9;
+  --border:#ccc9c3;--card:#e2dfd9;--inp:#fff;--inp-border:#ccc9c3;
+  --modal-bg:#fff;--modal-overlay:rgba(0,0,0,.35);
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+}
+body.dark{
+  --bg:#1a1917;--divider:#2a2826;--nav-active:#4e4843;--nav-inactive:#252320;
+  --nav-inactive-hover:#2c2a28;--text:#e5e2dc;--text2:#7c7570;--text3:#4a4540;
+  --border:#2e2b28;--card:#252320;--inp:#2a2826;--inp-border:#3a3733;
+  --modal-bg:#242220;--modal-overlay:rgba(0,0,0,.6);
+  --shadow:0 2px 12px rgba(0,0,0,.3);
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;transition:background .25s,color .25s}
+
+/* ── TITLEBAR ── */
+.titlebar{height:46px;display:flex;align-items:center;padding:0 18px;flex-shrink:0;position:relative;border-bottom:1px solid var(--divider);}
+.dots{display:flex;gap:7px}.dot{width:12px;height:12px;border-radius:50%}
+.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.tb-mid{position:absolute;left:50%;transform:translateX(-50%);font-size:12px;color:var(--text3);font-weight:500;letter-spacing:.02em;pointer-events:none}
+.tb-right{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:8px}
+.clock-pill{display:flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:999px;padding:4px 13px;font-size:12.5px;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:.02em;white-space:nowrap;background:rgba(255,255,255,.3)}
+body.dark .clock-pill{background:rgba(255,255,255,.04)}
+.ico-btn{width:32px;height:32px;border-radius:50%;background:transparent;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);transition:all .15s}
+.ico-btn:hover{background:var(--card);color:var(--text)}
+.ico-btn svg{width:17px;height:17px}
+
+/* ── LAYOUT ── */
+.layout{display:flex;flex:1}
+
+/* ── LEFT ── */
+.left{width:272px;flex-shrink:0;display:flex;flex-direction:column;padding:18px 15px;border-right:1px solid var(--divider);min-height:calc(100vh - 46px);position:sticky;top:46px;height:calc(100vh - 46px);overflow-y:auto}
+
+/* Nav grid */
+.nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:18px}
+.nav-btn{display:flex;align-items:center;gap:9px;padding:12px 12px;border-radius:11px;background:var(--nav-inactive);border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:13.5px;font-weight:500;color:var(--text);transition:background .15s,color .15s,transform .1s;text-align:left;position:relative;width:100%}
+.nav-btn:hover{background:var(--nav-inactive-hover);transform:translateY(-1px)}
+.nav-btn:active{transform:translateY(0)}
+.nav-btn.active{background:var(--nav-active);color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.nav-btn.active svg{color:rgba(255,255,255,.8)}
+.nav-btn svg{width:16px;height:16px;color:var(--text2);flex-shrink:0;transition:color .15s}
+.nav-lbl{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-btn.full{grid-column:1/-1}
+.nav-x{display:none;position:absolute;top:5px;right:5px;width:16px;height:16px;border-radius:3px;background:rgba(220,50,50,.15);color:#dc2626;border:none;font-size:9px;cursor:pointer;align-items:center;justify-content:center;font-weight:700;transition:background .1s}
+.nav-x:hover{background:rgba(220,50,50,.3)}
+.edit-mode .nav-x{display:flex}
+.add-nav-btn{display:none;grid-column:1/-1;align-items:center;justify-content:center;gap:5px;padding:11px;border-radius:11px;border:1.5px dashed var(--border);background:transparent;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;cursor:pointer;transition:all .14s;width:100%}
+.add-nav-btn:hover{border-color:var(--text2);color:var(--text2)}
+.edit-mode .add-nav-btn{display:flex}
+
+/* Status badge */
+.status-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;font-size:11.5px;font-weight:600;margin-bottom:16px;cursor:pointer;transition:opacity .15s;border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif}
+.status-chip:hover{opacity:.8}
+.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.status-available{background:var(--green-bg);color:var(--green-text)}
+.status-available .status-dot{background:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.2)}
+.status-busy{background:var(--amber-bg);color:var(--amber-text)}
+.status-busy .status-dot{background:#d97706}
+.status-dnd{background:var(--red-bg);color:var(--red-text)}
+.status-dnd .status-dot{background:#dc2626}
+
+/* Links */
+.links-wrap{margin-bottom:auto}
+.sec-lbl{font-size:11.5px;font-weight:700;color:var(--text);margin-bottom:9px;letter-spacing:.03em}
+.link-row-wrap{margin-bottom:1px}
+.link-a{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--text2);font-size:13px;padding:5px 3px;transition:color .14s;border-radius:6px}
+.link-a:hover{color:var(--text)}
+.link-a svg{width:16px;height:16px;flex-shrink:0}
+.lx-btn{display:none;background:rgba(220,50,50,.1);color:#dc2626;border:none;border-radius:4px;padding:2px 5px;font-size:9px;font-weight:700;cursor:pointer;margin-left:4px}
+.edit-mode .lx-btn{display:inline-block}
+.add-link-btn{display:none;align-items:center;gap:6px;padding:5px 3px;background:transparent;border:none;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;cursor:pointer;transition:color .14s;margin-top:2px}
+.add-link-btn:hover{color:var(--text2)}
+.edit-mode .add-link-btn{display:flex}
+
+/* Profile footer */
+.prof-footer{display:flex;align-items:center;gap:10px;padding-top:15px;border-top:1px solid var(--divider);margin-top:15px;flex-shrink:0}
+.av-wrap{position:relative;flex-shrink:0}
+.av{width:34px;height:34px;border-radius:50%;object-fit:cover;background:#a09890;display:block}
+.av-ov{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;cursor:pointer;font-size:8px;color:#fff;text-align:center;line-height:1.2}
+.edit-mode .av-wrap:hover .av-ov{display:flex}
+.prof-info{min-width:0}
+.prof-nm{font-size:13px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prof-handle{font-size:11px;color:var(--text3)}
+
+/* ── RIGHT ── */
+.right{flex:1;padding:40px 52px 80px;overflow-y:auto}
+.page-sec{display:none;animation:fadeIn .2s ease}.page-sec.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── HOME ── */
+.h-title{font-size:35px;font-weight:700;line-height:1.18;color:var(--text);margin-bottom:10px;letter-spacing:-.02em}
+.h-title em{font-style:normal;color:var(--text2)}
+.h-sub{font-size:15px;color:var(--text2);margin-bottom:22px;line-height:1.5}
+.h-body{font-size:15px;line-height:1.8;max-width:580px;margin-bottom:26px;color:var(--text)}
+.h-bar{background:var(--card);border-radius:9px;padding:12px 16px;font-size:13.5px;color:var(--text2);line-height:1.55;margin-bottom:26px;max-width:580px;border-left:3px solid var(--teal)}
+.stats-row{display:flex;align-items:center;gap:10px;margin-bottom:32px;font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text2)}
+.sn{color:var(--teal);font-weight:700}.sep{color:var(--text3)}
+.sec-hd{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);margin-bottom:14px}
+
+/* Projects list */
+.proj-list{display:flex;flex-direction:column;margin-bottom:14px}
+.proj-row{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid var(--divider);position:relative;transition:background .1s}
+.proj-row:first-child{border-top:1px solid var(--divider)}
+.proj-row:hover{background:rgba(0,0,0,.015)}
+body.dark .proj-row:hover{background:rgba(255,255,255,.015)}
+.pdot{width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:5px}
+.pmain{flex:1;min-width:0}
+.pnrow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:3px}
+.pname{font-size:14px;font-weight:600;color:var(--text)}
+.badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;letter-spacing:.02em;white-space:nowrap}
+.bt{background:var(--teal-bg);color:var(--teal-text)}
+.bg2{background:var(--green-bg);color:var(--green-text)}
+.bb{background:var(--blue-bg);color:var(--blue-text)}
+.ba{background:var(--amber-bg);color:var(--amber-text)}
+.brd{background:var(--red-bg);color:var(--red-text)}
+.bpu{background:var(--purple-bg);color:var(--purple-text)}
+.pdesc{font-size:12.5px;color:var(--text2);line-height:1.5}
+.parr{flex-shrink:0;color:var(--text3);font-size:15px;text-decoration:none;margin-top:2px;transition:color .14s;padding:2px}
+.parr:hover{color:var(--teal)}
+.pe-btn{display:none;position:absolute;top:10px;right:58px;background:rgba(0,0,0,.06);color:var(--text2);border:none;border-radius:5px;padding:2px 8px;font-size:10px;font-weight:600;cursor:pointer;transition:background .1s}
+.pe-btn:hover{background:rgba(0,0,0,.12)}
+body.dark .pe-btn{background:rgba(255,255,255,.07)}
+.px-btn{display:none;position:absolute;top:10px;right:18px;background:rgba(220,50,50,.1);color:#dc2626;border:none;border-radius:5px;padding:2px 8px;font-size:10px;font-weight:600;cursor:pointer}
+.edit-mode .pe-btn,.edit-mode .px-btn{display:block}
+
+/* Skills section */
+.skills-wrap{margin-bottom:32px}
+.skills-cloud{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.skill-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:999px;background:var(--card);border:1px solid var(--border);font-size:12px;font-weight:500;color:var(--text2);transition:all .14s;cursor:default}
+.skill-chip:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-bg)}
+.skill-del{display:none;background:none;border:none;color:var(--text3);cursor:pointer;font-size:10px;padding:0;line-height:1}
+.edit-mode .skill-del{display:inline}
+.add-skill-btn{display:none;align-items:center;gap:5px;padding:5px 12px;border-radius:999px;border:1.5px dashed var(--border);background:transparent;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;cursor:pointer;transition:all .14s}
+.add-skill-btn:hover{border-color:var(--text2);color:var(--text2)}
+.edit-mode .add-skill-btn{display:inline-flex}
+
+/* Contact */
+.contact-list{display:flex;flex-direction:column;gap:10px;max-width:400px}
+.cc{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--card);border-radius:11px;text-decoration:none;color:var(--text);transition:all .14s;position:relative;border:1px solid transparent}
+.cc:hover{border-color:var(--border);background:var(--nav-inactive-hover);transform:translateY(-1px);box-shadow:var(--shadow)}
+.cc-ico{font-size:18px;color:var(--text2)}
+.cl{font-size:13.5px;font-weight:600}.cv{font-size:12px;color:var(--text2);margin-top:1px}
+.cx-btn{display:none;position:absolute;top:8px;right:8px;background:rgba(220,50,50,.1);color:#dc2626;border:none;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;cursor:pointer}
+.edit-mode .cx-btn{display:block}
+
+/* About */
+.about-card{background:var(--card);border-radius:12px;padding:24px;max-width:580px;margin-bottom:24px}
+.about-card h3{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--text)}
+.about-card p{font-size:14px;color:var(--text2);line-height:1.75}
+.fun-facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:580px}
+.fact-card{background:var(--card);border-radius:10px;padding:14px 16px}
+.fact-icon{font-size:20px;margin-bottom:6px}
+.fact-title{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+.fact-val{font-size:14px;font-weight:600;color:var(--text)}
+
+/* Generic page */
+.gen-title{font-size:28px;font-weight:700;margin-bottom:8px;letter-spacing:-.02em}
+.gen-body{font-size:15px;color:var(--text2);line-height:1.8;max-width:540px;margin-bottom:20px}
+
+/* Add row btn */
+.add-row-btn{display:none;align-items:center;gap:6px;background:transparent;border:1.5px dashed var(--border);border-radius:8px;padding:8px 14px;font-size:12.5px;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .14s;margin-top:6px}
+.add-row-btn:hover{border-color:var(--text2);color:var(--text2)}
+.edit-mode .add-row-btn{display:inline-flex}
+
+/* Editable mode highlights */
+.edit-mode [contenteditable]{outline:none;cursor:text}
+.edit-mode .right [contenteditable]{border-bottom:1px dashed rgba(0,0,0,.2)}
+body.dark.edit-mode .right [contenteditable]{border-bottom-color:rgba(255,255,255,.18)}
+
+/* ── SETTINGS ── */
+.settings-sec{max-width:560px}
+.settings-block{background:var(--card);border-radius:12px;padding:20px;margin-bottom:16px}
+.settings-blk-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:14px}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-lbl{display:block;font-size:11px;font-weight:600;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.form-inp{width:100%;background:var(--inp);border:1px solid var(--inp-border);border-radius:8px;padding:9px 12px;font-size:13.5px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none;transition:border-color .14s}
+.form-inp:focus{border-color:var(--teal)}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.s-btn{padding:8px 18px;border-radius:8px;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .14s}
+.s-btn-primary{background:var(--nav-active);color:#fff}
+.s-btn-primary:hover{filter:brightness(1.1)}
+.s-btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.s-btn-outline:hover{background:var(--card)}
+.s-btn-danger{background:#dc2626;color:#fff}
+.s-btn-danger:hover{background:#b91c1c}
+.dns-card{background:var(--inp);border:1px solid var(--inp-border);border-radius:9px;padding:14px;font-size:13px;line-height:1.9;color:var(--text2)}
+.dns-card code{background:var(--card);padding:1px 6px;border-radius:4px;font-family:monospace;font-size:12px;color:var(--text)}
+.dns-ips{background:var(--card);border-radius:7px;padding:10px 14px;font-family:monospace;font-size:13px;line-height:2;margin:10px 0;color:var(--text)}
+.warn{color:#d97706;font-size:12px;background:var(--amber-bg);border-radius:6px;padding:8px 12px;margin-top:10px}
+
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;background:var(--modal-overlay);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
+.modal-bg.open{display:flex}
+.modal{background:var(--modal-bg);border-radius:16px;padding:28px;width:100%;max-width:430px;box-shadow:0 24px 64px rgba(0,0,0,.25);animation:modalIn .18s ease}
+@keyframes modalIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none;scale:1}}
+.modal-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:20px}
+.form-group{margin-bottom:13px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.badge-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.badge-opt{padding:4px 11px;border-radius:999px;font-size:11px;font-weight:600;cursor:pointer;border:2px solid transparent;transition:all .12s;opacity:.5}
+.badge-opt.sel{opacity:1;border-color:currentColor}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
+.m-cancel{background:transparent;border:1px solid var(--border);border-radius:8px;padding:8px 18px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text2);cursor:pointer}
+.m-cancel:hover{background:var(--card)}
+.m-save{background:var(--nav-active);color:#fff;border:none;border-radius:8px;padding:8px 22px;font-size:13px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:background .14s}
+.m-save:hover{filter:brightness(1.12)}
+
+/* Edit FAB */
+.edit-fab{position:fixed;bottom:24px;right:24px;width:46px;height:46px;border-radius:50%;background:var(--nav-active);color:#fff;border:none;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:background .2s,transform .15s}
+.edit-fab:hover{transform:scale(1.08)}
+.edit-fab.active{background:#16a34a}
+.edit-badge{position:absolute;top:-3px;right:-3px;background:#ef4444;color:#fff;border-radius:999px;font-size:8px;font-weight:700;padding:1px 5px;border:2px solid var(--bg);display:none;white-space:nowrap}
+.edit-mode .edit-badge{display:block}
+
+/* Toast */
+.toast{position:fixed;bottom:80px;right:24px;background:#1c1917;color:#fff;font-size:12.5px;padding:9px 16px;border-radius:8px;z-index:600;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.toast.show{opacity:1;transform:none}
+body.dark .toast{background:#e5e2dc;color:#1c1917}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+#photo-input{display:none}
+</style>
+</head>
+<body>
+<input type="file" id="photo-input" accept="image/*">
+
+<!-- ── MODAL ── -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Add item</div>
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button class="m-cancel" id="modal-cancel">Cancel</button>
+      <button class="m-save" id="modal-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TITLEBAR ── -->
+<div class="titlebar">
+  <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+  <div class="tb-mid" id="tb-site-title">subarna.com.np</div>
+  <div class="tb-right">
+    <div class="clock-pill">
+      <svg style="width:13px;height:13px;color:var(--text2);flex-shrink:0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span id="el-clock">12:00 AM</span>
+    </div>
+    <button class="ico-btn" id="btn-dark" title="Toggle dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/><circle cx="19" cy="5" r="1" fill="currentColor" stroke="none"/><circle cx="22" cy="9" r=".7" fill="currentColor" stroke="none"/><circle cx="17" cy="2" r=".7" fill="currentColor" stroke="none"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="layout">
+<!-- ── LEFT ── -->
+<div class="left">
+  <div class="nav-grid" id="nav-grid"></div>
+
+  <div style="margin-bottom:16px">
+    <div class="sec-lbl">Status</div>
+    <button class="status-chip status-available" id="status-chip">
+      <span class="status-dot"></span><span id="status-label">Available for work</span>
+    </button>
+  </div>
+
+  <div class="links-wrap">
+    <div class="sec-lbl">Links</div>
+    <div id="links-list"></div>
+    <button class="add-link-btn" id="btn-add-link">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add link
+    </button>
+  </div>
+
+  <div class="prof-footer">
+    <div class="av-wrap" id="av-wrap">
+      <img class="av" id="el-av" src="" alt="">
+      <div class="av-ov" id="av-ov">📷</div>
+    </div>
+    <div class="prof-info">
+      <div class="prof-nm" id="el-pname" contenteditable="false">Subarna</div>
+      <div class="prof-handle" id="el-handle" contenteditable="false">@subarna</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RIGHT ── -->
+<div class="right">
+
+  <!-- HOME -->
+  <div class="page-sec active" id="section-home">
+    <h1 class="h-title">
+      <span id="el-h1a" contenteditable="false">Building products people </span><em id="el-h1em" contenteditable="false">actually</em><span id="el-h1b" contenteditable="false"> use.</span>
+    </h1>
+    <p class="h-sub" id="el-sub" contenteditable="false">Product engineering for SaaS, automation, and growth.</p>
+    <p class="h-body" id="el-body" contenteditable="false">I'm building things online — shipping SaaS products, tools and automations with care, from personal projects to larger platforms.</p>
+    <div class="h-bar" id="el-bar" contenteditable="false">Shipped products used by 1,000+ users across SaaS and productivity tools.</div>
+    <div class="stats-row">
+      <span class="sn" id="el-s1n" contenteditable="false">2+</span><span id="el-s1l" contenteditable="false">Year partnerships</span>
+      <span class="sep">|</span>
+      <span class="sn" id="el-s2n" contenteditable="false">15+</span><span id="el-s2l" contenteditable="false">Projects built</span>
+      <span class="sep">|</span>
+      <span class="sn" id="el-s3n" contenteditable="false">∞</span><span id="el-s3l" contenteditable="false">Learning</span>
+    </div>
+
+    <div class="skills-wrap">
+      <div class="sec-hd">Tech stack</div>
+      <div class="skills-cloud" id="skills-cloud"></div>
+      <button class="add-skill-btn" id="btn-add-skill">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add skill
+      </button>
+    </div>
+
+    <div class="sec-hd">Personal projects</div>
+    <div class="proj-list" id="home-projs"></div>
+    <button class="add-row-btn" id="btn-add-proj-h">+ Add project</button>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="page-sec" id="section-projects">
+    <h2 class="gen-title">Projects</h2>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:28px">Things I've built and shipped.</p>
+    <div class="proj-list" id="proj-projs"></div>
+    <button class="add-row-btn" id="btn-add-proj-p">+ Add project</button>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="page-sec" id="section-about">
+    <h2 class="gen-title">About</h2>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:24px">A little about me.</p>
+    <div class="about-card">
+      <h3>Who I am</h3>
+      <p id="el-about-body" contenteditable="false">I'm a designer and builder passionate about creating things that people genuinely enjoy using. Based in Nepal, I work on personal projects and collaborate with clients around the world.</p>
+    </div>
+    <div class="fun-facts" id="fun-facts-grid"></div>
+    <button class="add-row-btn" id="btn-add-fact" style="margin-top:12px">+ Add fact card</button>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="page-sec" id="section-contact">
+    <h2 class="gen-title">Contact</h2>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:24px">Let's connect.</p>
+    <div class="contact-list" id="el-contacts"></div>
+    <button class="add-row-btn" id="btn-add-contact" style="margin-top:16px">+ Add contact</button>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="page-sec" id="section-settings">
+    <h2 class="gen-title">Settings</h2>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:24px">Manage your site.</p>
+    <div class="settings-sec">
+      <div class="settings-block">
+        <div class="settings-blk-title">Identity</div>
+        <div class="settings-grid">
+          <div><label class="form-lbl">Your name</label><input class="form-inp" id="set-name"></div>
+          <div><label class="form-lbl">Handle / subtitle</label><input class="form-inp" id="set-handle"></div>
+          <div><label class="form-lbl">Page title (browser tab)</label><input class="form-inp" id="set-title"></div>
+          <div><label class="form-lbl">Italic hero word</label><input class="form-inp" id="set-h1em"></div>
+        </div>
+        <div class="btn-row"><button class="s-btn s-btn-primary" id="set-save-id">Save identity</button></div>
+      </div>
+      <div class="settings-block">
+        <div class="settings-blk-title">Data management</div>
+        <div class="btn-row">
+          <button class="s-btn s-btn-primary" id="set-export">⬇ Export JSON</button>
+          <button class="s-btn s-btn-outline" id="set-import-btn">⬆ Import JSON</button>
+          <button class="s-btn s-btn-danger" id="set-reset">↺ Reset all</button>
+        </div>
+        <input type="file" id="set-import-file" accept=".json" style="display:none">
+      </div>
+      <div class="settings-block">
+        <div class="settings-blk-title">🚀 GitHub Pages + Cloudflare DNS setup</div>
+        <div class="dns-card">
+          <strong style="color:var(--text)">Step 1 — Fix your DNS in Cloudflare</strong><br>
+          Delete the A record with name <code>a</code> (it points to the wrong subdomain). Add 4 A records with:<br>
+          Name = <code>@</code> &nbsp; Proxy = <strong style="color:#e96c00">OFF (grey cloud ☁)</strong>
+          <div class="dns-ips">185.199.108.153<br>185.199.109.153<br>185.199.110.153<br>185.199.111.153</div>
+          Add a CNAME: Name = <code>www</code> → Value = <code>YOUR-USERNAME.github.io</code> (proxy OFF)<br><br>
+          <strong style="color:var(--text)">Step 2 — GitHub Pages</strong><br>
+          Repo → <code>Settings</code> → <code>Pages</code> → set custom domain = <code>subarna.com.np</code> → tick <strong style="color:var(--text)">Enforce HTTPS</strong>.<br><br>
+          <strong style="color:var(--text)">Step 3 — Wait</strong><br>
+          DNS propagation takes 1–24 hours. Test at <code>dnschecker.org</code>.
+          <div class="warn">⚠ Your current record has name "a" not "@". Also keep Cloudflare proxy OFF for GitHub to verify your domain ownership.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom sections appended by JS -->
+</div>
+</div>
+
+<button class="edit-fab" id="edit-fab">
+  <span id="fab-ico">✎</span>
+  <span class="edit-badge">EDIT</span>
+</button>
+<div class="toast" id="toast">Saved</div>
+
+<script>
+// ═══════════════════════════════
+// ICONS
+// ═══════════════════════════════
+const IC={
+  home:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+  folder:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`,
+  mail:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>`,
+  user:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+  settings:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
+  github:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>`,
+  linkedin:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>`,
+  twitter:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+  globe:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+  page:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+  star:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+};
+const ic=n=>IC[n]||IC.page;
+
+// ═══════════════════════════════
+// DEFAULTS
+// ═══════════════════════════════
+const D={
+  profileName:'Subarna', handle:'@subarna', photo:'',
+  pageTitle:'subarna.com.np',
+  h1a:'Building products people ', h1em:'actually', h1b:' use.',
+  sub:'Product engineering for SaaS, automation, and growth.',
+  body:"I'm building things online — shipping SaaS products, tools and automations with care, from personal projects to larger platforms.",
+  bar:'Shipped products used by 1,000+ users across SaaS and productivity tools.',
+  s1n:'2+', s1l:'Year partnerships', s2n:'15+', s2l:'Projects built', s3n:'∞', s3l:'Learning',
+  aboutBody:"I'm a designer and builder passionate about creating things that people genuinely enjoy using. Based in Nepal, I work on personal projects and collaborate with clients around the world.",
+  statusType:'available', statusLabel:'Available for work',
+  dark:false,
+  skills:['HTML','CSS','JavaScript','React','Node.js','Figma'],
+  navItems:[
+    {id:'home',     label:'Home',     section:'home',     icon:'home'},
+    {id:'projects', label:'Projects', section:'projects', icon:'folder'},
+    {id:'about',    label:'About',    section:'about',    icon:'user'},
+    {id:'contact',  label:'Contact',  section:'contact',  icon:'mail'},
+    {id:'settings', label:'Settings', section:'settings', icon:'settings'},
+  ],
+  links:[
+    {id:'gh', label:'GitHub',   icon:'github',   url:'https://github.com/'},
+    {id:'li', label:'LinkedIn', icon:'linkedin', url:'https://linkedin.com/in/'},
+  ],
+  projects:[
+    {id:'p1',name:'Project Alpha',desc:'A short description of what this does.',badges:[{t:'2,000+ users',c:'bt'},{t:'Active',c:'bg2'}],url:'#'},
+    {id:'p2',name:'Project Beta', desc:'Another project — edit this.',badges:[{t:'Open Source',c:'bb'}],url:'#'},
+  ],
+  funFacts:[
+    {id:'f1',icon:'🌏',title:'Location',value:'Kathmandu, Nepal'},
+    {id:'f2',icon:'⚡',title:'Availability',value:'Open to projects'},
+    {id:'f3',icon:'☕',title:'Fuel',value:'Coffee & curiosity'},
+    {id:'f4',icon:'🎯',title:'Focus',value:'Building in public'},
+  ],
+  contacts:[
+    {id:'c1',label:'Email',value:'hello@subarna.com.np',url:'mailto:hello@subarna.com.np'},
+  ],
+  customSections:[],
+};
+
+// ═══════════════════════════════
+// STATE
+// ═══════════════════════════════
+function loadState(){try{const r=localStorage.getItem('sb4');return r?Object.assign({},D,JSON.parse(r)):{...D};}catch(e){return{...D};}}
+function save(){localStorage.setItem('sb4',JSON.stringify(state));}
+let state=loadState(), editMode=false, activeSec='home';
+
+// ═══════════════════════════════
+// CLOCK — 12h
+// ═══════════════════════════════
+function tick(){
+  const n=new Date();
+  let h=n.getHours(), ampm=h>=12?'PM':'AM';
+  h=h%12||12;
+  const m=String(n.getMinutes()).padStart(2,'0');
+  document.getElementById('el-clock').textContent=h+':'+m+' '+ampm;
+}
+setInterval(tick,1000);tick();
+
+// ═══════════════════════════════
+// MONOGRAM
+// ═══════════════════════════════
+function mono(name,sz){
+  const ini=name.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2)||'?';
+  const c=document.createElement('canvas');c.width=c.height=sz;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#a09890';ctx.beginPath();ctx.arc(sz/2,sz/2,sz/2,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fff';ctx.font=`600 ${Math.floor(sz*.38)}px "Plus Jakarta Sans",sans-serif`;
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(ini,sz/2,sz/2+sz*.02);
+  return c.toDataURL();
+}
+
+// ═══════════════════════════════
+// RENDER
+// ═══════════════════════════════
+function render(){
+  document.body.classList.toggle('dark',state.dark);
+  document.title=state.pageTitle||state.profileName;
+  st('tb-site-title',state.pageTitle||state.profileName);
+  st('el-pname',state.profileName);st('el-handle',state.handle);
+  st('el-h1a',state.h1a);st('el-h1em',state.h1em);st('el-h1b',state.h1b);
+  st('el-sub',state.sub);st('el-body',state.body);st('el-bar',state.bar);
+  st('el-s1n',state.s1n);st('el-s1l',state.s1l);
+  st('el-s2n',state.s2n);st('el-s2l',state.s2l);
+  st('el-s3n',state.s3n);st('el-s3l',state.s3l);
+  st('el-about-body',state.aboutBody);
+  document.getElementById('el-av').src=state.photo||mono(state.profileName,34);
+  // status
+  const sc=document.getElementById('status-chip');
+  sc.className='status-chip status-'+state.statusType;
+  st('status-label',state.statusLabel);
+  renderNav();renderLinks();renderProjects();renderSkills();renderFunFacts();renderContacts();renderCustomSections();
+  syncSettings();
+}
+function st(id,v){const e=document.getElementById(id);if(e)e.textContent=v||'';}
+
+// ── NAV ──
+function renderNav(){
+  const g=document.getElementById('nav-grid');g.innerHTML='';
+  const core=['home','projects','about','contact','settings'];
+  state.navItems.forEach((item,i)=>{
+    const btn=document.createElement('button');
+    btn.className='nav-btn'+(activeSec===item.section?' active':'');
+    if(state.navItems.length%2!==0&&i===state.navItems.length-1)btn.classList.add('full');
+    btn.innerHTML=`${ic(item.icon)}<span class="nav-lbl">${item.label}</span>${!core.includes(item.id)?'<button class="nav-x">✕</button>':''}`;
+    btn.addEventListener('click',e=>{
+      if(e.target.closest('.nav-x')){state.navItems=state.navItems.filter(n=>n.id!==item.id);save();renderNav();return;}
+      goTo(item.section);
+    });
+    g.appendChild(btn);
+  });
+  const add=document.createElement('button');
+  add.className='add-nav-btn';
+  add.innerHTML=`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add page`;
+  add.addEventListener('click',()=>openModal('addnav'));
+  g.appendChild(add);
+}
+
+// ── LINKS ──
+function renderLinks(){
+  const l=document.getElementById('links-list');l.innerHTML='';
+  state.links.forEach(link=>{
+    const w=document.createElement('div');w.className='link-row-wrap';
+    w.innerHTML=`<div style="display:flex;align-items:center"><a class="link-a" href="${ea(link.url)}" target="_blank" rel="noopener">${ic(link.icon)}<span>${link.label}</span></a><button class="lx-btn" data-id="${link.id}">✕</button></div>`;
+    w.querySelector('.lx-btn').addEventListener('click',()=>{state.links=state.links.filter(x=>x.id!==link.id);save();renderLinks();});
+    l.appendChild(w);
+  });
+}
+
+// ── PROJECTS ──
+function renderProjects(){rPL('home-projs');rPL('proj-projs');}
+function rPL(cid){
+  const c=document.getElementById(cid);if(!c)return;c.innerHTML='';
+  state.projects.forEach(p=>{
+    const row=document.createElement('div');row.className='proj-row';
+    const bH=p.badges.map(b=>`<span class="badge ${b.c}">${b.t}</span>`).join('');
+    row.innerHTML=`<div class="pdot"></div><div class="pmain"><div class="pnrow"><span class="pname">${p.name}</span>${bH}</div><div class="pdesc">${p.desc}</div></div><a class="parr" href="${ea(p.url)}" target="_blank" rel="noopener">↗</a><button class="pe-btn">Edit</button><button class="px-btn">✕</button>`;
+    row.querySelector('.px-btn').addEventListener('click',()=>{state.projects=state.projects.filter(x=>x.id!==p.id);save();renderProjects();});
+    row.querySelector('.pe-btn').addEventListener('click',()=>openModal('editproj',p.id));
+    c.appendChild(row);
+  });
+}
+
+// ── SKILLS ──
+function renderSkills(){
+  const c=document.getElementById('skills-cloud');c.innerHTML='';
+  (state.skills||[]).forEach((sk,i)=>{
+    const chip=document.createElement('div');chip.className='skill-chip';
+    chip.innerHTML=`${sk}<button class="skill-del" data-i="${i}">✕</button>`;
+    chip.querySelector('.skill-del').addEventListener('click',()=>{state.skills.splice(i,1);save();renderSkills();});
+    c.appendChild(chip);
+  });
+}
+
+// ── FUN FACTS ──
+function renderFunFacts(){
+  const g=document.getElementById('fun-facts-grid');if(!g)return;g.innerHTML='';
+  (state.funFacts||[]).forEach(f=>{
+    const card=document.createElement('div');card.className='fact-card';card.style.position='relative';
+    card.innerHTML=`<div class="fact-icon">${f.icon}</div><div class="fact-title">${f.title}</div><div class="fact-val" contenteditable="false">${f.value}</div><button class="cx-btn" style="top:8px;right:8px">✕</button>`;
+    card.querySelector('.cx-btn').addEventListener('click',()=>{state.funFacts=state.funFacts.filter(x=>x.id!==f.id);save();renderFunFacts();});
+    g.appendChild(card);
+  });
+}
+
+// ── CONTACTS ──
+function renderContacts(){
+  const l=document.getElementById('el-contacts');l.innerHTML='';
+  state.contacts.forEach(c=>{
+    const w=document.createElement('div');w.style.position='relative';
+    w.innerHTML=`<a class="cc" href="${ea(c.url)}">${ic('mail')}<div><div class="cl">${c.label}</div><div class="cv">${c.value}</div></div><button class="cx-btn">✕</button></a>`;
+    w.querySelector('.cx-btn').addEventListener('click',e=>{e.preventDefault();state.contacts=state.contacts.filter(x=>x.id!==c.id);save();renderContacts();});
+    l.appendChild(w);
+  });
+}
+
+// ── CUSTOM SECTIONS ──
+function renderCustomSections(){
+  document.querySelectorAll('.custsec').forEach(e=>e.remove());
+  const right=document.querySelector('.right');
+  (state.customSections||[]).forEach(s=>{
+    const d=document.createElement('div');d.className='page-sec custsec';d.id='section-'+s.id;
+    if(activeSec===s.id)d.classList.add('active');
+    d.innerHTML=`<h2 class="gen-title" contenteditable="false">${s.title}</h2><p class="gen-body" contenteditable="false">${s.body}</p>`;
+    right.appendChild(d);
+  });
+}
+
+// ═══════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════
+function goTo(sec){
+  activeSec=sec;
+  document.querySelectorAll('.page-sec').forEach(s=>s.classList.remove('active'));
+  const t=document.getElementById('section-'+sec);if(t)t.classList.add('active');
+  renderNav();
+}
+
+// ═══════════════════════════════
+// STATUS TOGGLE
+// ═══════════════════════════════
+const statusCycle=[
+  {type:'available',label:'Available for work'},
+  {type:'busy',label:'Busy right now'},
+  {type:'dnd',label:'Not available'},
+];
+let statusIdx=0;
+document.getElementById('status-chip').addEventListener('click',()=>{
+  statusIdx=(statusIdx+1)%statusCycle.length;
+  state.statusType=statusCycle[statusIdx].type;
+  state.statusLabel=statusCycle[statusIdx].label;
+  save();render();
+});
+
+// ═══════════════════════════════
+// MODAL
+// ═══════════════════════════════
+let mCb=null;
+const BADGE_DEFS=[{c:'bt',label:'Teal'},{c:'bg2',label:'Green'},{c:'bb',label:'Blue'},{c:'ba',label:'Amber'},{c:'brd',label:'Red'},{c:'bpu',label:'Purple'}];
+
+function openModal(type,id){
+  const bg=document.getElementById('modal-bg');
+  const title=document.getElementById('modal-title');
+  const body=document.getElementById('modal-body');
+  bg.classList.add('open');
+
+  if(type==='addnav'){
+    title.textContent='Add page';
+    body.innerHTML=`
+      <div class="form-group"><label class="form-lbl">Page name</label><input class="form-inp" id="mi-label" placeholder="e.g. Blog, Work, Resume"></div>
+      <div class="form-group"><label class="form-lbl">Icon</label>
+        <select class="form-inp" id="mi-icon">
+          <option value="page">📄 Page</option><option value="folder">📁 Folder</option>
+          <option value="star">⭐ Star</option><option value="globe">🌐 Globe</option>
+          <option value="user">👤 Person</option><option value="mail">✉ Mail</option>
+        </select></div>`;
+    mCb=()=>{
+      const lbl=document.getElementById('mi-label').value.trim();if(!lbl)return false;
+      const icon=document.getElementById('mi-icon').value;
+      const nid='c'+Date.now();
+      state.navItems.push({id:nid,label:lbl,section:nid,icon});
+      if(!state.customSections)state.customSections=[];
+      state.customSections.push({id:nid,title:lbl,body:'Write your content here...'});
+      save();renderNav();renderCustomSections();goTo(nid);
+    };
+  }
+
+  else if(type==='addlink'){
+    title.textContent='Add link';
+    body.innerHTML=`
+      <div class="form-group"><label class="form-lbl">Label</label><input class="form-inp" id="mi-label" placeholder="Twitter, Website, ..."></div>
+      <div class="form-group"><label class="form-lbl">URL</label><input class="form-inp" id="mi-url" type="url" placeholder="https://..."></div>
+      <div class="form-group"><label class="form-lbl">Icon</label>
+        <select class="form-inp" id="mi-icon">
+          <option value="globe">🌐 Generic</option><option value="github">GitHub</option>
+          <option value="linkedin">LinkedIn</option><option value="twitter">X / Twitter</option>
+          <option value="mail">Email</option>
+        </select></div>`;
+    mCb=()=>{
+      const lbl=document.getElementById('mi-label').value.trim();
+      const url=document.getElementById('mi-url').value.trim();
+      if(!lbl||!url)return false;
+      state.links.push({id:'l'+Date.now(),label:lbl,icon:document.getElementById('mi-icon').value,url});
+      save();renderLinks();
+    };
+  }
+
+  else if(type==='addproj'||type==='editproj'){
+    const isE=type==='editproj';
+    const p=isE?state.projects.find(x=>x.id===id):null;
+    title.textContent=isE?'Edit project':'Add project';
+    let b1c=isE&&p.badges[0]?p.badges[0].c:'bt';
+    let b2c=isE&&p.badges[1]?p.badges[1].c:'bg2';
+    const bOpts=c=>BADGE_DEFS.map(b=>`<span class="badge-opt badge ${b.c}" data-c="${b.c}">${b.label}</span>`).join('');
+    body.innerHTML=`
+      <div class="form-group"><label class="form-lbl">Name</label><input class="form-inp" id="mi-name" value="${isE?p.name:''}" placeholder="Project name"></div>
+      <div class="form-group"><label class="form-lbl">Description</label><textarea class="form-inp" id="mi-desc" rows="2" style="resize:vertical">${isE?p.desc:''}</textarea></div>
+      <div class="form-group"><label class="form-lbl">URL</label><input class="form-inp" id="mi-url" value="${isE?p.url:'#'}" placeholder="https://..."></div>
+      <div class="form-group">
+        <label class="form-lbl">Badge 1 text</label>
+        <input class="form-inp" id="mi-b1t" value="${isE&&p.badges[0]?p.badges[0].t:''}" placeholder="e.g. 2,000+ users" style="margin-bottom:8px">
+        <div class="badge-picker" id="bp1">${bOpts()}</div>
+      </div>
+      <div class="form-group">
+        <label class="form-lbl">Badge 2 text (optional)</label>
+        <input class="form-inp" id="mi-b2t" value="${isE&&p.badges[1]?p.badges[1].t:''}" placeholder="e.g. Active" style="margin-bottom:8px">
+        <div class="badge-picker" id="bp2">${bOpts()}</div>
+      </div>`;
+    function initBP(bpId,initC,setCb){
+      const bp=document.getElementById(bpId);
+      bp.querySelectorAll('.badge-opt').forEach(el=>{
+        if(el.dataset.c===initC)el.classList.add('sel');
+        el.addEventListener('click',()=>{bp.querySelectorAll('.badge-opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');setCb(el.dataset.c);});
+      });
+    }
+    initBP('bp1',b1c,v=>{b1c=v});initBP('bp2',b2c,v=>{b2c=v});
+    mCb=()=>{
+      const name=document.getElementById('mi-name').value.trim();if(!name)return false;
+      const desc=document.getElementById('mi-desc').value.trim();
+      const url=document.getElementById('mi-url').value.trim()||'#';
+      const b1t=document.getElementById('mi-b1t').value.trim();
+      const b2t=document.getElementById('mi-b2t').value.trim();
+      const badges=[];if(b1t)badges.push({t:b1t,c:b1c});if(b2t)badges.push({t:b2t,c:b2c});
+      if(isE){const pr=state.projects.find(x=>x.id===id);if(pr){pr.name=name;pr.desc=desc;pr.url=url;pr.badges=badges;}}
+      else state.projects.push({id:'p'+Date.now(),name,desc,url,badges});
+      save();renderProjects();
+    };
+  }
+
+  else if(type==='addcontact'){
+    title.textContent='Add contact';
+    body.innerHTML=`
+      <div class="form-group"><label class="form-lbl">Label</label><input class="form-inp" id="mi-label" placeholder="Email, Twitter, Phone..."></div>
+      <div class="form-group"><label class="form-lbl">Display value</label><input class="form-inp" id="mi-val" placeholder="hello@subarna.com.np"></div>
+      <div class="form-group"><label class="form-lbl">URL</label><input class="form-inp" id="mi-url" placeholder="mailto:... or https://..."></div>`;
+    mCb=()=>{
+      const lbl=document.getElementById('mi-label').value.trim();if(!lbl)return false;
+      state.contacts.push({id:'c'+Date.now(),label:lbl,value:document.getElementById('mi-val').value.trim(),url:document.getElementById('mi-url').value.trim()||'#'});
+      save();renderContacts();
+    };
+  }
+
+  else if(type==='addfact'){
+    title.textContent='Add fact card';
+    body.innerHTML=`
+      <div class="form-group"><label class="form-lbl">Emoji icon</label><input class="form-inp" id="mi-icon" placeholder="🌏" maxlength="4"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-lbl">Title</label><input class="form-inp" id="mi-label" placeholder="Location"></div>
+        <div class="form-group"><label class="form-lbl">Value</label><input class="form-inp" id="mi-val" placeholder="Kathmandu, Nepal"></div>
+      </div>`;
+    mCb=()=>{
+      const icon=document.getElementById('mi-icon').value.trim()||'✨';
+      const title2=document.getElementById('mi-label').value.trim();if(!title2)return false;
+      const value=document.getElementById('mi-val').value.trim();
+      if(!state.funFacts)state.funFacts=[];
+      state.funFacts.push({id:'f'+Date.now(),icon,title:title2,value});
+      save();renderFunFacts();
+    };
+  }
+
+  setTimeout(()=>{const fi=body.querySelector('.form-inp');if(fi)fi.focus();},50);
+}
+
+function closeModal(){document.getElementById('modal-bg').classList.remove('open');mCb=null;}
+document.getElementById('modal-cancel').addEventListener('click',closeModal);
+document.getElementById('modal-bg').addEventListener('click',e=>{if(e.target===document.getElementById('modal-bg'))closeModal();});
+document.getElementById('modal-save').addEventListener('click',()=>{if(mCb&&mCb()!==false)closeModal();else if(mCb)toast('Please fill required fields ⚠');});
+document.getElementById('modal-bg').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.target.matches('textarea'))document.getElementById('modal-save').click();if(e.key==='Escape')closeModal();});
+
+// ═══════════════════════════════
+// ADD BUTTONS
+// ═══════════════════════════════
+document.getElementById('btn-add-link').addEventListener('click',()=>openModal('addlink'));
+document.getElementById('btn-add-proj-h').addEventListener('click',()=>openModal('addproj'));
+document.getElementById('btn-add-proj-p').addEventListener('click',()=>openModal('addproj'));
+document.getElementById('btn-add-contact').addEventListener('click',()=>openModal('addcontact'));
+document.getElementById('btn-add-fact').addEventListener('click',()=>openModal('addfact'));
+document.getElementById('btn-add-skill').addEventListener('click',()=>{
+  openModal('_custom','');
+  document.getElementById('modal-title').textContent='Add skill / tech';
+  document.getElementById('modal-body').innerHTML=`<div class="form-group"><label class="form-lbl">Skill name</label><input class="form-inp" id="mi-skill" placeholder="e.g. TypeScript, Figma, Docker"></div>`;
+  mCb=()=>{const v=document.getElementById('mi-skill').value.trim();if(!v)return false;if(!state.skills)state.skills=[];state.skills.push(v);save();renderSkills();};
+  setTimeout(()=>document.getElementById('mi-skill')&&document.getElementById('mi-skill').focus(),50);
+});
+
+// ═══════════════════════════════
+// EDIT MODE
+// ═══════════════════════════════
+function toggleEdit(){
+  if(editMode){
+    collectEdits();save();
+    editMode=false;document.body.classList.remove('edit-mode');
+    document.getElementById('edit-fab').classList.remove('active');
+    document.getElementById('fab-ico').textContent='✎';
+    document.querySelectorAll('[contenteditable]').forEach(e=>e.contentEditable='false');
+    render();toast('All changes saved ✓');
+  }else{
+    editMode=true;document.body.classList.add('edit-mode');
+    document.getElementById('edit-fab').classList.add('active');
+    document.getElementById('fab-ico').textContent='✓';
+    document.querySelectorAll('[contenteditable]').forEach(e=>e.contentEditable='true');
+    toast('Edit mode — click any text to edit it');
+  }
+}
+
+function collectEdits(){
+  state.profileName=gT('el-pname');state.handle=gT('el-handle');
+  state.h1a=gT('el-h1a');state.h1em=gT('el-h1em');state.h1b=gT('el-h1b');
+  state.sub=gT('el-sub');state.body=gT('el-body');state.bar=gT('el-bar');
+  state.s1n=gT('el-s1n');state.s1l=gT('el-s1l');state.s2n=gT('el-s2n');state.s2l=gT('el-s2l');state.s3n=gT('el-s3n');state.s3l=gT('el-s3l');
+  state.aboutBody=gT('el-about-body');
+  // fun fact values
+  document.querySelectorAll('#fun-facts-grid .fact-val[contenteditable]').forEach((el,i)=>{if(state.funFacts[i])state.funFacts[i].value=el.textContent.trim();});
+  // custom sections
+  document.querySelectorAll('.custsec').forEach(sec=>{
+    const sid=sec.id.replace('section-','');
+    const cs=state.customSections.find(x=>x.id===sid);if(!cs)return;
+    const h=sec.querySelector('h2');const p=sec.querySelector('.gen-body');
+    if(h)cs.title=h.textContent.trim();if(p)cs.body=p.textContent.trim();
+  });
+}
+
+function gT(id){const e=document.getElementById(id);return e?e.textContent.trim():'';}
+document.getElementById('edit-fab').addEventListener('click',toggleEdit);
+
+// ═══════════════════════════════
+// PHOTO
+// ═══════════════════════════════
+document.getElementById('av-ov').addEventListener('click',()=>{if(editMode)document.getElementById('photo-input').click();});
+document.getElementById('photo-input').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{state.photo=ev.target.result;save();document.getElementById('el-av').src=ev.target.result;};
+  r.readAsDataURL(f);e.target.value='';
+});
+
+// ═══════════════════════════════
+// DARK MODE
+// ═══════════════════════════════
+document.getElementById('btn-dark').addEventListener('click',()=>{state.dark=!state.dark;document.body.classList.toggle('dark',state.dark);save();});
+
+// ═══════════════════════════════
+// SETTINGS
+// ═══════════════════════════════
+function syncSettings(){
+  const f=id=>document.getElementById(id);
+  if(f('set-name'))f('set-name').value=state.profileName||'';
+  if(f('set-handle'))f('set-handle').value=state.handle||'';
+  if(f('set-title'))f('set-title').value=state.pageTitle||'';
+  if(f('set-h1em'))f('set-h1em').value=state.h1em||'';
+}
+document.getElementById('set-save-id').addEventListener('click',()=>{
+  const f=id=>(document.getElementById(id)||{}).value||'';
+  if(f('set-name'))state.profileName=f('set-name');
+  if(f('set-handle'))state.handle=f('set-handle');
+  if(f('set-title'))state.pageTitle=f('set-title');
+  if(f('set-h1em'))state.h1em=f('set-h1em');
+  save();render();toast('Identity saved ✓');
+});
+document.getElementById('set-export').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='subarna-data.json';a.click();
+});
+document.getElementById('set-import-btn').addEventListener('click',()=>document.getElementById('set-import-file').click());
+document.getElementById('set-import-file').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{try{Object.assign(state,JSON.parse(ev.target.result));save();render();toast('Data imported ✓');}catch{toast('Invalid JSON file');}};
+  r.readAsText(f);e.target.value='';
+});
+document.getElementById('set-reset').addEventListener('click',()=>{
+  if(!confirm('Reset everything to defaults?'))return;
+  localStorage.removeItem('sb4');state={...D};render();toast('Reset done');
+});
+
+// ═══════════════════════════════
+// HELPERS
+// ═══════════════════════════════
+function ea(s){return String(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+let tT;function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),2800);}
+
+// ═══════════════════════════════
+// INIT
+// ═══════════════════════════════
+render();
+</script>
+</body>
+</html>
