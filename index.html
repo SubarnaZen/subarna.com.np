@@ -1,10 +1,12 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>subarna.com.np</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -336,15 +338,15 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
 #photo-input,#gallery-upload-input,#set-import-file{display:none}
 </style>
 </head>
-<body class="admin-logged-in">
+<body>
 <input type="file" id="photo-input" accept="image/*">
-<input type="file" id="gallery-upload-input" accept="image/*" multiple="">
+<input type="file" id="gallery-upload-input" accept="image/*" multiple>
 <input type="file" id="set-import-file" accept=".json">
 
 <!-- FULL-PAGE LOGIN SCREEN -->
 <div class="login-screen" id="login-screen">
   <div class="login-card">
-    <div class="login-avatar"><img id="login-av-img" src="data:image/png;base64,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" alt=""></div>
+    <div class="login-avatar"><img id="login-av-img" src="" alt=""></div>
     <div class="login-site-name" id="login-site-name">subarna.com.np</div>
     <div class="login-title">Welcome back 👋</div>
     <div class="login-sub">Sign in to manage your site</div>
@@ -370,6 +372,7 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
     <div class="login-err" id="recovery-err">Recovery key incorrect</div>
     <button class="login-submit" id="recovery-submit">Unlock with key →</button>
     <button class="login-back" id="recovery-back">← Back to login</button>
+  </div
   </div>
 </div>
 
@@ -382,23 +385,23 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
     </div>
     <div class="admin-bar-actions">
       <button class="ab-btn ab-btn-edit" id="ab-edit-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         <span id="ab-edit-label">Edit mode</span>
       </button>
-      <button class="ab-btn ab-btn-save" id="ab-save-btn" style="display: none;">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <button class="ab-btn ab-btn-save" id="ab-save-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         Save
       </button>
-      <button class="ab-btn ab-btn-publish" id="ab-publish-btn" disabled="">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg>
-        <span id="ab-publish-label">Publishing...</span>
+      <button class="ab-btn ab-btn-publish" id="ab-publish-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        <span id="ab-publish-label">Publish</span>
       </button>
       <button class="ab-btn ab-btn-settings" id="ab-settings-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         Settings
       </button>
       <button class="ab-btn ab-btn-logout" id="ab-logout-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Logout
       </button>
     </div>
@@ -408,15 +411,8 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
 <!-- ITEM MODAL -->
 <div class="modal-bg" id="modal-bg">
   <div class="modal">
-    <div class="modal-title" id="modal-title">Add link</div>
-    <div id="modal-body">
-      <div class="form-group"><label class="form-lbl">Label</label><input class="form-inp" id="mi-lbl" placeholder="Twitter, Website..."></div>
-      <div class="form-group"><label class="form-lbl">URL</label><input class="form-inp" id="mi-url" type="url" placeholder="https://..."></div>
-      <div class="form-group"><label class="form-lbl">Icon</label>
-        <select class="form-inp" id="mi-icon">
-          <option value="globe">Generic</option><option value="github">GitHub</option>
-          <option value="linkedin">LinkedIn</option><option value="twitter">X/Twitter</option><option value="mail">Email</option>
-        </select></div></div>
+    <div class="modal-title" id="modal-title">Add item</div>
+    <div id="modal-body"></div>
     <div class="modal-actions">
       <button class="m-cancel" id="modal-cancel">Cancel</button>
       <button class="m-save" id="modal-save">Save</button>
@@ -440,15 +436,15 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
 <div class="titlebar">
   <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
   <button class="hamburger" id="hamburger" aria-label="Menu">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
   <div class="tb-right">
     <div class="clock-pill">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-      <span id="el-clock">11:44 AM</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span id="el-clock">12:00 AM</span>
     </div>
     <button class="ico-btn" id="btn-dark" title="Toggle dark mode">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path><circle cx="19" cy="5" r="1" fill="currentColor" stroke="none"></circle><circle cx="22" cy="9" r=".7" fill="currentColor" stroke="none"></circle><circle cx="17" cy="2" r=".7" fill="currentColor" stroke="none"></circle></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/><circle cx="19" cy="5" r="1" fill="currentColor" stroke="none"/><circle cx="22" cy="9" r=".7" fill="currentColor" stroke="none"/><circle cx="17" cy="2" r=".7" fill="currentColor" stroke="none"/></svg>
     </button>
   </div>
 </div>
@@ -456,21 +452,21 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
 <div class="layout">
 <!-- LEFT SIDEBAR -->
 <div class="left" id="left-sidebar">
-  <div class="nav-grid" id="nav-grid"><button class="nav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="nav-lbl">Home</span></button><button class="nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg><span class="nav-lbl">Projects</span></button><button class="nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg><span class="nav-lbl">Gallery</span></button><button class="nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span class="nav-lbl">About</span></button><button class="nav-btn full"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><polyline points="22,4 12,13 2,4"></polyline></svg><span class="nav-lbl">Contact</span></button><div class="add-nav-wrap"><button class="add-nav-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add page</button></div></div>
+  <div class="nav-grid" id="nav-grid"></div>
   <div style="margin-bottom:14px">
     <div class="sec-lbl">Status</div>
-    <button class="status-chip s-available" id="status-chip"><span class="sdot"></span><span>Available for work</span></button>
+    <button class="status-chip s-available" id="status-chip"><span class="sdot"></span><span id="status-lbl">Available for work</span></button>
   </div>
   <div class="links-wrap">
     <div class="sec-lbl">Links</div>
-    <div id="links-list"><div style="display: flex; align-items: center;"><a class="link-a" href="https://github.com/SubarnaZen" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"></path></svg><span>GitHub</span></a><button class="lx-btn">✕</button></div><div style="display: flex; align-items: center;"><a class="link-a" href="https://www.facebook.com/SubarnaZen/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg><span>Facebook</span></a><button class="lx-btn">✕</button></div><div style="display: flex; align-items: center;"><a class="link-a" href="https://x.com/subarnazen" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg><span>twitter.com</span></a><button class="lx-btn">✕</button></div><div style="display: flex; align-items: center;"><a class="link-a" href="https://www.linkedin.com/in/subarnazen/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg><span>Linkedin</span></a><button class="lx-btn">✕</button></div></div>
+    <div id="links-list"></div>
     <button class="add-link-btn" id="btn-add-link">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add link
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add link
     </button>
   </div>
   <div class="prof-footer">
     <div class="av-wrap" id="av-wrap">
-      <img class="av" id="el-av" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADg0lEQVR4AbxWaUuUURR+3lvZJBE27UXRQrTaZntY0deg5UNEYOVgYPWhpPoZFVMfaqJkDAOhD1ESFZEh+aHF3MUoMrdMaRklXHB7385znbFxaZoLzrycw7333HOe5/G+x/eOQpTPvevXp931edNyfN47Obe87/0+7y+ZD9D1XGIyv8Mc5kYJi/8K8N+6mkzg/gS7zQFyBTgDDlIswC1z1is9l5isM5jDXNawVmIRjQD/TMi56b1sOapSEjLEI+bKfrgxN4O1xAjfGDln4sgYqJzHDAsXR22aBgSDWMQcq3SUAP+Nq6mivBCDRzpWjXlMsCxHFRJ7ZPEwAVRpKfVQkvh+ZRhXcxObHOGoKnxhQfkx2FwyxMTc1iAHQs+QAN0sclShjZiNwqG5ggRagD4WaZZgLPaDcGlOYdICpEHOyzyuFuJUwa+WJ67sg2QecquBBPuArPVJyBhP09xKPp17TVnXp2zDsfTTOJl5XvuhoyewcPFSUxiQW8nXboNJ5aIly7Bq7QZ0d3fhTdFLVJS+g8vlwtadezBrzlwTKJBbOQ6WwOBxz5yNSQmT8L31Gz7WVKG8+DUqy4rR3NSAzo4OAySA3LzJkkyqfrS2oKenB4vkyDdvT0XSdDdqKsv0aXR1mgmQWzRJmZAzt7mpHtXlJbBtB2vWb8KBI2k4KL50+UpuGzubsN20qqayFPdzb+PFk0eor/2ExKlTkbJtF+YtWGgEJU3YriwLdSZVyRu3YP/ho2Az8jReFTxDw5fPmOyagtlz55tAgdwKDsph8PT39SHJPUP/xavXbcSK1cmamPG2wE8DJEkVbiWNUCjTqO1DdbluOpcrEVt27Mb21H2YkpgIxhvraqPGYSK51YRelS8LWzxqK5N/vbwcH54/foCCp/nI8/tQUfI26vpgok1ulXbu3G8J8HeADGbW0tyEr411ZkV/s/3kVlw7ln2NYzw9xKkFeDIvVEkzXombAAdXNKcQagEyIv1M1iVYKOE8pi4cmitIMiSAawe2R8aAeKwsEOQYwh8mgMfi2PYh2Y2FiACxySH4QzZMAKOesxeKpEH2juvrkGMnJrHJEe6jBHCTKtMzszaPS2NKwxHLw0Yn+AgfU0Aoh80iytfJOlvcFo/WmJvNWmJEKooogIVUnn4669TEXjVdPp3HJZbN1yM3GfuERHIxI8AY95jDXNawVmIR7Q8AAAD//+S3r7EAAAAGSURBVAMAF9pWKszoh6oAAAAASUVORK5CYII=" alt="">
+      <img class="av" id="el-av" src="" alt="">
       <div class="av-ov" id="av-ov">📷</div>
     </div>
     <div>
@@ -485,24 +481,24 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
 
   <!-- HOME -->
   <div class="page-sec active" id="section-home">
-    <h1 class="h-title"><span id="el-h1a" contenteditable="false">Exploring Knowledge, Sharing Insights</span><em id="el-h1em" contenteditable="false"></em><span id="el-h1b" contenteditable="false">.</span></h1>
-    <p class="h-sub" id="el-sub" contenteditable="false">Floating in the Quantum World ♥️Physics + Physique = Life ❄️</p>
-    <p class="h-body" id="el-body" contenteditable="false">Currently learning, building, and exploring the fascinating worlds of physics, research, and technology.Driven by curiosity today, guided by ambition for tomorrow..</p>
-    <div class="h-bar" id="el-bar" contenteditable="false">Learning and understanding the universe through curiosity, experiments, and theoretical ideas.</div>
+    <h1 class="h-title"><span id="el-h1a" contenteditable="false">Building products people </span><em id="el-h1em" contenteditable="false">actually</em><span id="el-h1b" contenteditable="false"> use.</span></h1>
+    <p class="h-sub" id="el-sub" contenteditable="false">Product engineering for SaaS, automation, and growth.</p>
+    <p class="h-body" id="el-body" contenteditable="false">I'm building things online — shipping SaaS products, tools and automations with care, from personal projects to larger platforms.</p>
+    <div class="h-bar" id="el-bar" contenteditable="false">Shipped products used by 1,000+ users across SaaS and productivity tools.</div>
     <div class="stats-row">
-      <span class="sn" id="el-s1n" contenteditable="false">2.5+</span><span id="el-s1l" contenteditable="false">Year partnership ex(X)😄</span>
+      <span class="sn" id="el-s1n" contenteditable="false">2+</span><span id="el-s1l" contenteditable="false">Year partnerships</span>
       <span class="sep">|</span>
-      <span class="sn" id="el-s2n" contenteditable="false">3 +</span><span id="el-s2l" contenteditable="false">years experience in Tech-field</span>
+      <span class="sn" id="el-s2n" contenteditable="false">15+</span><span id="el-s2l" contenteditable="false">Projects built</span>
       <span class="sep">|</span>
-      <span class="sn" id="el-s3n" contenteditable="false">∞</span><span id="el-s3l" contenteditable="false">pursuing goal</span>
+      <span class="sn" id="el-s3n" contenteditable="false">∞</span><span id="el-s3l" contenteditable="false">Learning</span>
     </div>
     <div style="margin-bottom:28px">
       <div class="sec-hd">Tech stack</div>
-      <div class="skills-cloud" id="skills-cloud"><div class="skill-chip">HTML<button class="skill-del">✕</button></div><div class="skill-chip">Python<button class="skill-del">✕</button></div><div class="skill-chip">DFT<button class="skill-del">✕</button></div><div class="skill-chip">Quantum Expresso<button class="skill-del">✕</button></div><div class="skill-chip">flirting<button class="skill-del">✕</button></div><div class="skill-chip">joking<button class="skill-del">✕</button></div></div>
-      <button class="add-skill-btn" id="btn-add-skill"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add skill</button>
+      <div class="skills-cloud" id="skills-cloud"></div>
+      <button class="add-skill-btn" id="btn-add-skill"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add skill</button>
     </div>
     <div class="sec-hd">Personal projects</div>
-    <div class="proj-list" id="home-projs"><div class="proj-row"><div class="pdot"></div><div class="pmain"><div class="pnrow"><span class="pname">Quarkcode Technology</span><span class="badge bg2">Active</span></div><div class="pdesc">Buiding the ............</div></div><a class="parr" href="#" target="_blank" rel="noopener">↗</a><button class="pe-btn">Edit</button><button class="px-btn">✕</button></div></div>
+    <div class="proj-list" id="home-projs"></div>
     <button class="add-row-btn" id="btn-add-proj-h">+ Add project</button>
   </div>
 
@@ -510,7 +506,7 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
   <div class="page-sec" id="section-projects">
     <h2 class="gen-title">Projects</h2>
     <p style="font-size:13.5px;color:var(--text2);margin-bottom:26px">Things I've built and shipped.</p>
-    <div class="proj-list" id="proj-projs"><div class="proj-row"><div class="pdot"></div><div class="pmain"><div class="pnrow"><span class="pname">Quarkcode Technology</span><span class="badge bg2">Active</span></div><div class="pdesc">Buiding the ............</div></div><a class="parr" href="#" target="_blank" rel="noopener">↗</a><button class="pe-btn">Edit</button><button class="px-btn">✕</button></div></div>
+    <div class="proj-list" id="proj-projs"></div>
     <button class="add-row-btn" id="btn-add-proj-p">+ Add project</button>
   </div>
 
@@ -524,13 +520,13 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
     </div>
     <!-- Folder view -->
     <div id="gallery-folders-view">
-      <div class="folder-grid" id="folder-grid"><div class="folder-card"><div class="folder-icon">👽</div><div class="folder-name">👽👽</div><div class="folder-count">2 photos</div><button class="folder-del">✕</button></div></div>
+      <div class="folder-grid" id="folder-grid"></div>
       <button class="add-row-btn" id="btn-add-folder">+ New folder</button>
     </div>
     <!-- Photo view -->
     <div id="gallery-photos-view" style="display:none">
       <div class="upload-zone" id="upload-zone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         <p>Click to upload photos</p>
         <small>JPG, PNG, WEBP — multiple files supported</small>
       </div>
@@ -546,9 +542,9 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
     <p style="font-size:13.5px;color:var(--text2);margin-bottom:22px">A little about me.</p>
     <div class="about-card">
       <h3>Who I am</h3>
-      <p id="el-about" contenteditable="false">I spend my time trying to understand the world, and the world spends its time confusing me back. Nepali, learning one mystery at a time.</p>
+      <p id="el-about" contenteditable="false">I'm a designer and builder passionate about creating things that people genuinely enjoy using. Based in Nepal, I work on personal projects and collaborate with clients around the world.</p>
     </div>
-    <div class="fun-facts" id="fun-facts"><div class="fact-card"><div class="fact-icon">🌏</div><div class="fact-title">Location</div><div class="fact-val" contenteditable="false">Kathmandu, Nepal</div><button class="cx-btn">✕</button></div><div class="fact-card"><div class="fact-icon">⚡</div><div class="fact-title">Availability</div><div class="fact-val" contenteditable="false">Open to projects</div><button class="cx-btn">✕</button></div><div class="fact-card"><div class="fact-icon">🎯</div><div class="fact-title">Focus</div><div class="fact-val" contenteditable="false">Building in public</div><button class="cx-btn">✕</button></div></div>
+    <div class="fun-facts" id="fun-facts"></div>
     <button class="add-row-btn" id="btn-add-fact" style="margin-top:11px">+ Add fact card</button>
   </div>
 
@@ -556,7 +552,7 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
   <div class="page-sec" id="section-contact">
     <h2 class="gen-title">Contact</h2>
     <p style="font-size:13.5px;color:var(--text2);margin-bottom:22px">Let's connect.</p>
-    <div class="contact-list" id="el-contacts"><div style="position: relative;"><a class="cc" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><polyline points="22,4 12,13 2,4"></polyline></svg><div><div class="cl">Subarnazen@gmail.com</div><div class="cv"></div></div><button class="cx-btn">✕</button></a></div></div>
+    <div class="contact-list" id="el-contacts"></div>
     <button class="add-row-btn" id="btn-add-contact" style="margin-top:14px">+ Add contact</button>
   </div>
 
@@ -639,7 +635,7 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
 </div>
 
 <button class="edit-fab" id="edit-fab" title="Save changes">✓</button>
-<div class="toast" id="toast">🚀 Published! All devices update in ~2 minutes</div>
+<div class="toast" id="toast"></div>
 
 <script>
 // ═══ ICONS ═══
@@ -660,7 +656,45 @@ const IC={
 const ic=n=>IC[n]||IC.page;
 
 // ═══ DEFAULT STATE ═══
-const D=/*STATE_START*/{"profileName":"Subarna","handle":"@subarna","photo":"","pageTitle":"subarna.com.np","h1a":"Exploring Knowledge, Sharing Insights","h1em":"","h1b":".","sub":"Floating in the Quantum World ♥️Physics + Physique = Life ❄️","body":"Currently learning, building, and exploring the fascinating worlds of physics, research, and technology.Driven by curiosity today, guided by ambition for tomorrow..","bar":"Learning and understanding the universe through curiosity, experiments, and theoretical ideas.","s1n":"2.5+","s1l":"Year partnership ex(X)😄","s2n":"3 +","s2l":"years experience in Tech-field","s3n":"∞","s3l":"pursuing goal","aboutBody":"I spend my time trying to understand the world, and the world spends its time confusing me back. Nepali, learning one mystery at a time.","statusType":"available","statusLabel":"Available for work","dark":false,"skills":["HTML","Python","DFT","Quantum Expresso","flirting","joking"],"navItems":[{"id":"home","label":"Home","section":"home","icon":"home"},{"id":"projects","label":"Projects","section":"projects","icon":"folder"},{"id":"gallery","label":"Gallery","section":"gallery","icon":"image"},{"id":"about","label":"About","section":"about","icon":"user"},{"id":"contact","label":"Contact","section":"contact","icon":"mail"}],"links":[{"id":"l1780022108442","label":"GitHub","icon":"github","url":"https://github.com/SubarnaZen"},{"id":"l1780022177681","label":"Facebook","icon":"globe","url":"https://www.facebook.com/SubarnaZen/"},{"id":"l1780033977369","label":"twitter.com","icon":"globe","url":"https://x.com/subarnazen"},{"id":"l1780034072136","label":"Linkedin","icon":"globe","url":"https://www.linkedin.com/in/subarnazen/"}],"projects":[{"id":"p1","name":"Quarkcode Technology","desc":"Buiding the ............","badges":[{"t":"Active","c":"bg2"}],"url":"#"}],"funFacts":[{"id":"f1","icon":"🌏","title":"Location","value":"Kathmandu, Nepal"},{"id":"f2","icon":"⚡","title":"Availability","value":"Open to projects"},{"id":"f4","icon":"🎯","title":"Focus","value":"Building in public"}],"contacts":[{"id":"c1780021783371","label":"Subarnazen@gmail.com","value":"","url":"#"}],"gallery":[{"id":"gf1780021858866","name":"👽👽","emoji":"👽"}],"customSections":[]}/*STATE_END*/;
+const D=/*STATE_START*/{
+  profileName:'Subarna',handle:'@subarna',photo:'',pageTitle:'subarna.com.np',
+  h1a:'Building products people ',h1em:'actually',h1b:' use.',
+  sub:'Product engineering for SaaS, automation, and growth.',
+  body:"I'm building things online — shipping SaaS products, tools and automations with care, from personal projects to larger platforms.",
+  bar:'Shipped products used by 1,000+ users across SaaS and productivity tools.',
+  s1n:'2+',s1l:'Year partnerships',s2n:'15+',s2l:'Projects built',s3n:'∞',s3l:'Learning',
+  aboutBody:"I'm a designer and builder passionate about creating things that people genuinely enjoy using. Based in Nepal, I work on personal projects and collaborate with clients around the world.",
+  statusType:'available',statusLabel:'Available for work',
+  dark:false,
+  skills:['HTML','CSS','JavaScript','React','Node.js','Figma'],
+  navItems:[
+    {id:'home',label:'Home',section:'home',icon:'home'},
+    {id:'projects',label:'Projects',section:'projects',icon:'folder'},
+    {id:'gallery',label:'Gallery',section:'gallery',icon:'image'},
+    {id:'about',label:'About',section:'about',icon:'user'},
+    {id:'contact',label:'Contact',section:'contact',icon:'mail'},
+  ],
+  links:[
+    {id:'gh',label:'GitHub',icon:'github',url:'https://github.com/'},
+    {id:'li',label:'LinkedIn',icon:'linkedin',url:'https://linkedin.com/in/'},
+  ],
+  projects:[
+    {id:'p1',name:'Project Alpha',desc:'A short description of what this project does.',badges:[{t:'2,000+ users',c:'bt'},{t:'Active',c:'bg2'}],url:'#'},
+    {id:'p2',name:'Project Beta',desc:'Another project — click edit to update details.',badges:[{t:'Open Source',c:'bb'}],url:'#'},
+  ],
+  funFacts:[
+    {id:'f1',icon:'🌏',title:'Location',value:'Kathmandu, Nepal'},
+    {id:'f2',icon:'⚡',title:'Availability',value:'Open to projects'},
+    {id:'f3',icon:'☕',title:'Fuel',value:'Coffee & curiosity'},
+    {id:'f4',icon:'🎯',title:'Focus',value:'Building in public'},
+  ],
+  contacts:[{id:'c1',label:'Email',value:'hello@subarna.com.np',url:'mailto:hello@subarna.com.np'}],
+  gallery:[
+    {id:'gf1',name:'Nepal',emoji:'🏔'},
+    {id:'gf2',name:'Projects',emoji:'💻'},
+  ],
+  customSections:[],
+}/*STATE_END*/;
 
 function loadState(){try{const r=localStorage.getItem('sb6');return r?Object.assign({},D,JSON.parse(r)):{...D};}catch(e){return{...D};}}
 function save(){localStorage.setItem('sb6',JSON.stringify(state));}
@@ -1463,15 +1497,29 @@ document.getElementById('gh-test').addEventListener('click',async()=>{
 
 // Bake current state into the HTML string
 function bakeStateIntoHTML(){
+  // CRITICAL: strip admin classes from body BEFORE capturing HTML
+  // so visitors never see the admin bar
+  const hadAdmin=document.body.classList.contains('admin-logged-in');
+  const hadEdit=document.body.classList.contains('edit-mode');
+  document.body.classList.remove('admin-logged-in','edit-mode');
+
   const html=document.documentElement.outerHTML;
-  // Replace the D=/*STATE_START*/{...}/*STATE_END*/ with current state
+
+  // Restore classes for current session
+  if(hadAdmin)document.body.classList.add('admin-logged-in');
+  if(hadEdit)document.body.classList.add('edit-mode');
+
   const stateClean={...state};
-  delete stateClean.githubToken; // never bake token into file
   const stateJson=JSON.stringify(stateClean);
-  const baked=html.replace(
+  // Also strip any admin/edit classes baked into body tag as safety net
+  let baked=html.replace(
     /const D=\/\*STATE_START\*\/[\s\S]*?\/\*STATE_END\*\//,
-    `const D=/*STATE_START*/${stateJson}/*STATE_END*/`
+    'const D=/*STATE_START*/'+stateJson+'/*STATE_END*/'
   );
+  // Strip admin classes from <body> tag in the output HTML
+  baked=baked.replace(/(<body[^>]*?)\badmin-logged-in\b/g,'$1');
+  baked=baked.replace(/(<body[^>]*?)\bedit-mode\b/g,'$1');
+  baked=baked.replace(/class="\s*"/g,'');
   return baked;
 }
 
@@ -1573,6 +1621,5 @@ function toast(msg){
 // ═══ INIT ═══
 render();
 </script>
-
-
-</body></html>
+</body>
+</html>
