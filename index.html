@@ -274,6 +274,12 @@ body.edit-mode .left [contenteditable]{outline:none;cursor:text;border-bottom:1p
 .login-submit:active{transform:none}
 .login-back{background:transparent;border:none;color:var(--text3);font-size:12.5px;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;padding:6px;transition:color .14s}
 .login-back:hover{color:var(--text2)}
+.login-forgot{background:transparent;border:none;color:var(--text3);font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;padding:4px;transition:color .14s;text-decoration:underline;text-underline-offset:3px}
+.login-forgot:hover{color:var(--teal)}
+.forgot-card{display:none;width:100%;max-width:360px;text-align:center;animation:mIn .2s ease}
+.forgot-card.open{display:block}
+.login-card.hide{display:none}
+.login-back:hover{color:var(--text2)}
 
 /* ADMIN TOOLBAR */
 .admin-bar{position:fixed;bottom:0;left:0;right:0;z-index:400;display:none;background:rgba(28,25,23,.96);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.08);padding:0 16px}
@@ -348,6 +354,22 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
     <div class="login-err" id="pw-err">Incorrect password — try again</div>
     <button class="login-submit" id="pw-submit">Sign in →</button>
     <button class="login-back" id="pw-cancel">← Back to site</button>
+    <div style="margin-top:16px;border-top:1px solid var(--divider);padding-top:14px">
+      <button class="login-forgot" id="pw-forgot">Forgot password?</button>
+    </div>
+  </div>
+  <!-- Forgot password panel (inside login card) -->
+  <div class="forgot-card" id="forgot-card">
+    <div style="font-size:22px;margin-bottom:10px">🔑</div>
+    <div class="login-title" style="font-size:18px">Recovery key</div>
+    <div class="login-sub">Enter your recovery key to log in.<br>Default key: <code style="background:var(--card);padding:2px 7px;border-radius:5px;font-size:12px;color:var(--teal)">recover-subarna</code></div>
+    <div class="login-field">
+      <input class="login-inp" type="text" id="recovery-inp" placeholder="Enter recovery key" autocomplete="off">
+    </div>
+    <div class="login-err" id="recovery-err">Recovery key incorrect</div>
+    <button class="login-submit" id="recovery-submit">Unlock with key →</button>
+    <button class="login-back" id="recovery-back">← Back to login</button>
+  </div
   </div>
 </div>
 
@@ -971,16 +993,20 @@ document.getElementById('status-chip').addEventListener('click',()=>{
   save();render();
 });
 
-// ═══ PASSWORD + SESSION ═══
-const DEFAULT_PW='subarna123';
+// ═══ PASSWORD — stored in file, works on ALL devices ═══
+// To change password: Settings → Change password → downloads new index.html → upload to GitHub
+const PW_HASH='c55524b475e2e481bb4b9855d714558df45dacdef8db93335b7f8db3b53bc12f'; // = subarna123
+const RECOVERY_HASH='9338523016d1af44c31b7c21bc2cfc3c3f7ab03f5c7d7e81ee83bee832a9137a'; // = recover-subarna
 let loggedIn=false;
 
 async function hashPw(pw){
   const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(pw));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
-async function getHash(){return localStorage.getItem('sb_pw')||await hashPw(DEFAULT_PW);}
-async function verifyPw(pw){return await hashPw(pw)===await getHash();}
+async function verifyPw(pw){
+  const h=await hashPw(pw);
+  return h===PW_HASH||h===RECOVERY_HASH;
+}
 
 // Session: remember login for this browser tab
 function saveSession(){sessionStorage.setItem('sb_admin','1');}
@@ -1031,6 +1057,39 @@ async function tryLogin(){
 
 document.getElementById('pw-submit').addEventListener('click',tryLogin);
 document.getElementById('pw-cancel').addEventListener('click',closeLogin);
+
+// ─── FORGOT PASSWORD FLOW ───
+document.getElementById('pw-forgot').addEventListener('click',()=>{
+  document.getElementById('login-card').classList.add('hide');
+  document.getElementById('forgot-card').classList.add('open');
+  setTimeout(()=>document.getElementById('recovery-inp').focus(),80);
+});
+document.getElementById('recovery-back').addEventListener('click',()=>{
+  document.getElementById('forgot-card').classList.remove('open');
+  document.getElementById('login-card').classList.remove('hide');
+  document.getElementById('recovery-err').classList.remove('show');
+  document.getElementById('recovery-inp').value='';
+});
+document.getElementById('recovery-submit').addEventListener('click',async()=>{
+  const val=document.getElementById('recovery-inp').value.trim();
+  const err=document.getElementById('recovery-err');
+  if(!val){document.getElementById('recovery-inp').classList.add('shake');setTimeout(()=>document.getElementById('recovery-inp').classList.remove('shake'),400);return;}
+  const h=await hashPw(val);
+  if(h===RECOVERY_HASH){
+    // Recovery key accepted — log in
+    saveSession();closeLogin();activateAdmin();
+    toast('🔑 Logged in with recovery key — change your password in Settings!');
+  }else{
+    err.classList.add('show');
+    document.getElementById('recovery-inp').classList.add('shake');
+    setTimeout(()=>document.getElementById('recovery-inp').classList.remove('shake'),400);
+    document.getElementById('recovery-inp').value='';
+    document.getElementById('recovery-inp').focus();
+  }
+});
+document.getElementById('recovery-inp').addEventListener('keydown',e=>{
+  if(e.key==='Enter')document.getElementById('recovery-submit').click();
+});
 document.getElementById('pw-inp').addEventListener('keydown',e=>{
   if(e.key==='Enter')tryLogin();
   if(e.key==='Escape')closeLogin();
@@ -1326,11 +1385,20 @@ document.getElementById('set-change-pw').addEventListener('click',async()=>{
   if(nw.length<6){toast('Min 6 characters ⚠');return;}
   if(nw!==con){toast('Passwords do not match ⚠');return;}
   if(!await verifyPw(cur)){toast('Current password wrong ⚠');return;}
-  localStorage.setItem('sb_pw',await hashPw(nw));
+  const newHash=await hashPw(nw);
+  // Bake new hash into HTML and download — upload to GitHub to apply on all devices
+  const html=document.documentElement.outerHTML;
+  const updated=html
+    .replace(/const PW_HASH='[a-f0-9]{64}'/,`const PW_HASH='${newHash}'`);
+  const blob=new Blob([updated],{type:'text/html;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='index.html';
+  a.click();
   document.getElementById('set-pw-cur').value='';
   document.getElementById('set-pw-new').value='';
   document.getElementById('set-pw-con').value='';
-  toast('Password changed ✓');
+  toast('📥 index.html downloaded — upload to GitHub to apply on all devices');
 });
 
 // ═══ HELPERS ═══
