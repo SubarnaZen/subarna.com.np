@@ -299,6 +299,9 @@ body.admin-logged-in .admin-bar{display:block}
 .ab-btn-settings{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)}
 .ab-btn-settings:hover{background:rgba(255,255,255,.15);color:#fff}
 .ab-btn-settings.active{background:rgba(13,148,136,.4);color:var(--teal)}
+.ab-btn-publish{background:var(--teal);color:#fff}
+.ab-btn-publish:hover{filter:brightness(1.1)}
+.ab-btn-publish:disabled{opacity:.5;cursor:not-allowed;filter:none}
 .ab-btn-logout{background:transparent;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.12)}
 .ab-btn-logout:hover{background:rgba(220,50,50,.15);color:#f87171;border-color:rgba(220,50,50,.3)}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
@@ -387,7 +390,11 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
       </button>
       <button class="ab-btn ab-btn-save" id="ab-save-btn">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        Save changes
+        Save
+      </button>
+      <button class="ab-btn ab-btn-publish" id="ab-publish-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        <span id="ab-publish-label">Publish</span>
       </button>
       <button class="ab-btn ab-btn-settings" id="ab-settings-btn">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -582,6 +589,35 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
         </div>
       </div>
       <div class="settings-block">
+        <div class="settings-blk-title">🚀 Publish to GitHub</div>
+        <div style="background:var(--teal-bg);border-radius:8px;padding:10px 13px;margin-bottom:14px;font-size:12.5px;color:var(--teal-text);line-height:1.7">
+          Connect your GitHub repo so the <strong>Publish</strong> button in the admin bar auto-updates your live site on every device.
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;max-width:400px">
+          <div>
+            <label class="form-lbl">GitHub Token (Personal Access Token)</label>
+            <input class="form-inp" type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+            <div style="font-size:11px;color:var(--text3);margin-top:3px">
+              github.com → Settings → Developer settings → Personal access tokens → Classic → New token → tick <code style="background:var(--card);padding:1px 5px;border-radius:3px">repo</code>
+            </div>
+          </div>
+          <div>
+            <label class="form-lbl">Repository (username/repo-name)</label>
+            <input class="form-inp" id="gh-repo" placeholder="SubarnaZen/Subarna.com.np">
+          </div>
+          <div>
+            <label class="form-lbl">Branch</label>
+            <input class="form-inp" id="gh-branch" placeholder="main" value="main">
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="s-btn s-btn-p" id="gh-save-settings">Save GitHub settings</button>
+          <button class="s-btn s-btn-o" id="gh-test">Test connection</button>
+        </div>
+        <div id="gh-status" style="font-size:12px;margin-top:8px;display:none"></div>
+      </div>
+
+      <div class="settings-block">
         <div class="settings-blk-title">🚀 DNS — GitHub Pages + Cloudflare</div>
         <div class="dns-card">
           <strong style="color:var(--text)">A records</strong> — 4 records, Name <code>@</code>, Proxy <strong style="color:#e96c00">OFF ☁</strong>:
@@ -620,7 +656,7 @@ const IC={
 const ic=n=>IC[n]||IC.page;
 
 // ═══ DEFAULT STATE ═══
-const D={
+const D=/*STATE_START*/{
   profileName:'Subarna',handle:'@subarna',photo:'',pageTitle:'subarna.com.np',
   h1a:'Building products people ',h1em:'actually',h1b:' use.',
   sub:'Product engineering for SaaS, automation, and growth.',
@@ -658,7 +694,7 @@ const D={
     {id:'gf2',name:'Projects',emoji:'💻'},
   ],
   customSections:[],
-};
+}/*STATE_END*/;
 
 function loadState(){try{const r=localStorage.getItem('sb6');return r?Object.assign({},D,JSON.parse(r)):{...D};}catch(e){return{...D};}}
 function save(){localStorage.setItem('sb6',JSON.stringify(state));}
@@ -1123,6 +1159,12 @@ function updateAdminBar(){
   // Settings button highlight
   const settBtn=document.getElementById('ab-settings-btn');
   settBtn.classList.toggle('active',activeSec==='settings');
+  // Show publish button label based on GitHub config
+  const ghCfg=JSON.parse(localStorage.getItem('sb_gh')||'{}');
+  const pubLabel=document.getElementById('ab-publish-label');
+  if(pubLabel){
+    pubLabel.textContent=ghCfg.token&&ghCfg.repo?'Publish':'Download';
+  }
 }
 
 document.getElementById('ab-edit-btn').addEventListener('click',()=>{
@@ -1348,7 +1390,7 @@ document.getElementById('btn-add-skill').addEventListener('click',()=>openModal(
 document.getElementById('btn-add-folder').addEventListener('click',()=>openModal('addfolder'));
 
 // ═══ SETTINGS ═══
-function syncSettings(){
+function syncSettings(){loadGHSettings();
   const f=id=>(document.getElementById(id)||{});
   if(f('set-name').value!==undefined)f('set-name').value=state.profileName||'';
   if(f('set-handle').value!==undefined)f('set-handle').value=state.handle||'';
@@ -1400,6 +1442,158 @@ document.getElementById('set-change-pw').addEventListener('click',async()=>{
   document.getElementById('set-pw-con').value='';
   toast('📥 index.html downloaded — upload to GitHub to apply on all devices');
 });
+
+// ═══ GITHUB PUBLISH ═══
+
+// Load GitHub settings from localStorage (token stays on device — never baked into file)
+function loadGHSettings(){
+  const g=JSON.parse(localStorage.getItem('sb_gh')||'{}');
+  const t=document.getElementById('gh-token');
+  const r=document.getElementById('gh-repo');
+  const b=document.getElementById('gh-branch');
+  if(t&&g.token)t.value=g.token;
+  if(r&&g.repo)r.value=g.repo;
+  if(b)b.value=g.branch||'main';
+}
+
+document.getElementById('gh-save-settings').addEventListener('click',()=>{
+  const token=document.getElementById('gh-token').value.trim();
+  const repo=document.getElementById('gh-repo').value.trim();
+  const branch=document.getElementById('gh-branch').value.trim()||'main';
+  if(!token||!repo){toast('Enter both token and repository ⚠');return;}
+  localStorage.setItem('sb_gh',JSON.stringify({token,repo,branch}));
+  toast('GitHub settings saved ✓');
+});
+
+document.getElementById('gh-test').addEventListener('click',async()=>{
+  const g=JSON.parse(localStorage.getItem('sb_gh')||'{}');
+  const status=document.getElementById('gh-status');
+  if(!g.token||!g.repo){toast('Save GitHub settings first ⚠');return;}
+  status.style.display='block';
+  status.style.color='var(--text2)';
+  status.textContent='Testing connection...';
+  try{
+    const res=await fetch(`https://api.github.com/repos/${g.repo}/contents/index.html`,{
+      headers:{Authorization:`token ${g.token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(res.status===200){
+      status.style.color='var(--green-text)';
+      status.textContent='✅ Connected! Repository found and accessible.';
+    }else if(res.status===401){
+      status.style.color='#dc2626';
+      status.textContent='❌ Token invalid or expired — create a new one.';
+    }else if(res.status===404){
+      status.style.color='#dc2626';
+      status.textContent='❌ Repository or file not found — check the repo name.';
+    }else{
+      status.style.color='#dc2626';
+      status.textContent=`❌ Error ${res.status} — check settings.`;
+    }
+  }catch(e){
+    status.style.color='#dc2626';
+    status.textContent='❌ Network error — check your internet connection.';
+  }
+});
+
+// Bake current state into the HTML string
+function bakeStateIntoHTML(){
+  const html=document.documentElement.outerHTML;
+  // Replace the D=/*STATE_START*/{...}/*STATE_END*/ with current state
+  const stateClean={...state};
+  delete stateClean.githubToken; // never bake token into file
+  const stateJson=JSON.stringify(stateClean);
+  const baked=html.replace(
+    /const D=\/\*STATE_START\*\/[\s\S]*?\/\*STATE_END\*\//,
+    `const D=/*STATE_START*/${stateJson}/*STATE_END*/`
+  );
+  return baked;
+}
+
+// Main publish function
+async function publishToGitHub(){
+  const g=JSON.parse(localStorage.getItem('sb_gh')||'{}');
+  if(!g.token||!g.repo){
+    // No GitHub configured — offer download instead
+    downloadIndexHTML();
+    toast('📥 Downloaded! Upload index.html to GitHub manually.');
+    return;
+  }
+  const btn=document.getElementById('ab-publish-btn');
+  const lbl=document.getElementById('ab-publish-label');
+  btn.disabled=true;
+  lbl.textContent='Publishing...';
+
+  try{
+    // First collect any pending edits
+    if(editMode)collectEdits();
+
+    const htmlContent=bakeStateIntoHTML();
+    const branch=g.branch||'main';
+
+    // Step 1: get current file SHA
+    const getRes=await fetch(
+      `https://api.github.com/repos/${g.repo}/contents/index.html?ref=${branch}`,
+      {headers:{Authorization:`token ${g.token}`,Accept:'application/vnd.github.v3+json'}}
+    );
+
+    if(getRes.status===401){lbl.textContent='Publish';btn.disabled=false;toast('❌ GitHub token expired — update in Settings');return;}
+    if(getRes.status===404){lbl.textContent='Publish';btn.disabled=false;toast('❌ Repo or file not found — check Settings');return;}
+
+    const fileData=await getRes.json();
+    const sha=fileData.sha;
+
+    // Step 2: encode HTML as base64
+    const encoded=btoa(unescape(encodeURIComponent(htmlContent)));
+
+    // Step 3: push update
+    const putRes=await fetch(
+      `https://api.github.com/repos/${g.repo}/contents/index.html`,
+      {
+        method:'PUT',
+        headers:{
+          Authorization:`token ${g.token}`,
+          Accept:'application/vnd.github.v3+json',
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+          message:`Update site — ${new Date().toLocaleString()}`,
+          content:encoded,
+          sha:sha,
+          branch:branch
+        })
+      }
+    );
+
+    if(putRes.ok){
+      lbl.textContent='Published ✓';
+      setTimeout(()=>{lbl.textContent='Publish';btn.disabled=false;},3000);
+      toast('🚀 Published! All devices update in ~2 minutes');
+      // Also save to localStorage
+      save();
+    }else{
+      const err=await putRes.json();
+      lbl.textContent='Publish';btn.disabled=false;
+      toast('❌ Publish failed: '+(err.message||putRes.status));
+    }
+  }catch(e){
+    lbl.textContent='Publish';btn.disabled=false;
+    toast('❌ Network error — check connection');
+    console.error(e);
+  }
+}
+
+// Fallback: just download the file
+function downloadIndexHTML(){
+  if(editMode)collectEdits();
+  const html=bakeStateIntoHTML();
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='index.html';
+  a.click();
+}
+
+document.getElementById('ab-publish-btn').addEventListener('click',publishToGitHub);
 
 // ═══ HELPERS ═══
 function ea(s){return String(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
