@@ -235,9 +235,7 @@ body.edit-mode .left [contenteditable]{outline:none;cursor:text;border-bottom:1p
 .dns-warn{color:#d97706;font-size:11.5px;background:var(--amber-bg);border-radius:5px;padding:7px 11px;margin-top:8px}
 
 /* SAVE FAB — invisible to visitors */
-.edit-fab{position:fixed;bottom:22px;right:22px;width:44px;height:44px;border-radius:50%;background:#16a34a;color:#fff;border:none;font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;box-shadow:0 4px 18px rgba(0,0,0,.28);transition:transform .15s}
-.edit-fab:hover{transform:scale(1.08)}
-body.edit-mode .edit-fab{display:flex}
+.edit-fab{display:none!important}
 
 /* MODAL */
 .modal-bg{position:fixed;inset:0;background:var(--overlay);z-index:500;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(2px)}
@@ -255,24 +253,51 @@ body.edit-mode .edit-fab{display:flex}
 .m-save{background:var(--nav-active);color:#fff;border:none;border-radius:7px;padding:7px 20px;font-size:12.5px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
 .m-save:hover{filter:brightness(1.12)}
 
-/* PASSWORD MODAL */
-.pw-bg{position:fixed;inset:0;background:var(--overlay);z-index:700;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
-.pw-bg.open{display:flex}
-.pw-box{background:var(--modal-bg);border-radius:16px;padding:28px 24px 24px;width:100%;max-width:300px;box-shadow:0 24px 64px rgba(0,0,0,.3);animation:mIn .17s ease;text-align:center}
-.pw-lock{font-size:30px;margin-bottom:10px}
-.pw-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
-.pw-sub{font-size:12.5px;color:var(--text2);margin-bottom:20px}
-.pw-field{position:relative;margin-bottom:9px;text-align:left}
-.pw-inp{width:100%;background:var(--inp);border:1px solid var(--inp-border);border-radius:8px;padding:10px 38px 10px 12px;font-size:13.5px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none;transition:border-color .14s}
-.pw-inp:focus{border-color:var(--teal)}
-.pw-inp.shake{animation:shake .3s}
-.pw-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:15px}
-.pw-err{font-size:11.5px;color:#dc2626;margin-bottom:12px;text-align:left;display:none}
-.pw-err.show{display:block}
-.pw-submit{width:100%;background:var(--nav-active);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13.5px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;margin-bottom:8px}
-.pw-submit:hover{filter:brightness(1.1)}
-.pw-cancel{background:transparent;border:none;color:var(--text2);font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;padding:4px}
+/* LOGIN SCREEN */
+.login-screen{position:fixed;inset:0;z-index:900;display:none;align-items:center;justify-content:center;padding:20px;background:var(--bg)}
+.login-screen.open{display:flex}
+.login-card{width:100%;max-width:360px;text-align:center;animation:mIn .22s ease}
+.login-avatar{width:72px;height:72px;border-radius:50%;margin:0 auto 14px;background:var(--card);border:2px solid var(--border);overflow:hidden}
+.login-avatar img{width:100%;height:100%;object-fit:cover}
+.login-site-name{font-size:13px;color:var(--text3);margin-bottom:28px;font-weight:500;letter-spacing:.04em}
+.login-title{font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-.01em}
+.login-sub{font-size:13.5px;color:var(--text2);margin-bottom:28px}
+.login-field{position:relative;margin-bottom:10px;text-align:left}
+.login-inp{width:100%;background:var(--inp);border:1.5px solid var(--inp-border);border-radius:11px;padding:13px 44px 13px 16px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none;transition:border-color .14s;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.login-inp:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,.12)}
+.login-inp.shake{animation:shake .3s}
+.login-eye{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;padding:4px}
+.login-err{font-size:12px;color:#dc2626;margin-bottom:14px;text-align:left;display:none;padding-left:4px}
+.login-err.show{display:block}
+.login-submit{width:100%;background:var(--nav-active);color:#fff;border:none;border-radius:11px;padding:13px;font-size:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;margin-bottom:12px;transition:filter .14s,transform .1s;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.login-submit:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.login-submit:active{transform:none}
+.login-back{background:transparent;border:none;color:var(--text3);font-size:12.5px;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;padding:6px;transition:color .14s}
+.login-back:hover{color:var(--text2)}
+
+/* ADMIN TOOLBAR */
+.admin-bar{position:fixed;bottom:0;left:0;right:0;z-index:400;display:none;background:rgba(28,25,23,.96);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.08);padding:0 16px}
+body.admin-logged-in .admin-bar{display:block}
+.admin-bar-inner{display:flex;align-items:center;justify-content:space-between;height:48px;max-width:960px;margin:0 auto}
+.admin-bar-left{display:flex;align-items:center;gap:8px}
+.admin-bar-logo{font-size:14px}
+.admin-bar-label{font-size:12px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase}
+.admin-bar-actions{display:flex;align-items:center;gap:6px}
+.ab-btn{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:7px;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .14s;white-space:nowrap}
+.ab-btn svg{flex-shrink:0}
+.ab-btn-edit{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75)}
+.ab-btn-edit:hover{background:rgba(255,255,255,.18);color:#fff}
+.ab-btn-edit.active{background:#16a34a;color:#fff}
+.ab-btn-save{background:#16a34a;color:#fff}
+.ab-btn-save:hover{background:#15803d}
+.ab-btn-settings{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)}
+.ab-btn-settings:hover{background:rgba(255,255,255,.15);color:#fff}
+.ab-btn-settings.active{background:rgba(13,148,136,.4);color:var(--teal)}
+.ab-btn-logout{background:transparent;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.12)}
+.ab-btn-logout:hover{background:rgba(220,50,50,.15);color:#f87171;border-color:rgba(220,50,50,.3)}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+/* push content up on mobile so admin bar doesn't cover it */
+body.admin-logged-in .right{padding-bottom:70px}
 
 /* TOAST */
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(70px);background:#1c1917;color:#fff;font-size:12px;padding:8px 16px;border-radius:999px;z-index:600;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.22)}
@@ -309,19 +334,48 @@ body.dark .toast{background:#e5e2dc;color:#1c1917}
 <input type="file" id="gallery-upload-input" accept="image/*" multiple>
 <input type="file" id="set-import-file" accept=".json">
 
-<!-- PASSWORD MODAL -->
-<div class="pw-bg" id="pw-bg">
-  <div class="pw-box">
-    <div class="pw-lock">🔐</div>
-    <div class="pw-title">Admin access</div>
-    <div class="pw-sub">Enter password to edit</div>
-    <div class="pw-field">
-      <input class="pw-inp" type="password" id="pw-inp" placeholder="Password" autocomplete="current-password">
-      <button class="pw-eye" id="pw-eye" tabindex="-1">👁</button>
+<!-- FULL-PAGE LOGIN SCREEN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <div class="login-avatar"><img id="login-av-img" src="" alt=""></div>
+    <div class="login-site-name" id="login-site-name">subarna.com.np</div>
+    <div class="login-title">Welcome back 👋</div>
+    <div class="login-sub">Sign in to manage your site</div>
+    <div class="login-field">
+      <input class="login-inp" type="password" id="pw-inp" placeholder="Enter your password" autocomplete="current-password">
+      <button class="login-eye" id="pw-eye" tabindex="-1">👁</button>
     </div>
-    <div class="pw-err" id="pw-err">Incorrect password</div>
-    <button class="pw-submit" id="pw-submit">Unlock →</button>
-    <button class="pw-cancel" id="pw-cancel">Cancel</button>
+    <div class="login-err" id="pw-err">Incorrect password — try again</div>
+    <button class="login-submit" id="pw-submit">Sign in →</button>
+    <button class="login-back" id="pw-cancel">← Back to site</button>
+  </div>
+</div>
+
+<!-- ADMIN TOOLBAR -->
+<div class="admin-bar" id="admin-bar">
+  <div class="admin-bar-inner">
+    <div class="admin-bar-left">
+      <span class="admin-bar-logo">⚡</span>
+      <span class="admin-bar-label">Admin</span>
+    </div>
+    <div class="admin-bar-actions">
+      <button class="ab-btn ab-btn-edit" id="ab-edit-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <span id="ab-edit-label">Edit mode</span>
+      </button>
+      <button class="ab-btn ab-btn-save" id="ab-save-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Save changes
+      </button>
+      <button class="ab-btn ab-btn-settings" id="ab-settings-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+      <button class="ab-btn ab-btn-logout" id="ab-logout-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
+    </div>
   </div>
 </div>
 
@@ -663,6 +717,10 @@ function render(){
   st('el-s1n',state.s1n);st('el-s1l',state.s1l);st('el-s2n',state.s2n);st('el-s2l',state.s2l);st('el-s3n',state.s3n);st('el-s3l',state.s3l);
   st('el-about',state.aboutBody);
   document.getElementById('el-av').src=state.photo||mono(state.profileName,32);
+  // keep login card avatar in sync
+  const lav=document.getElementById('login-av-img');
+  if(lav)lav.src=state.photo||mono(state.profileName,72);
+  if(document.getElementById('login-site-name'))document.getElementById('login-site-name').textContent=state.pageTitle||state.profileName;
   const sc=document.getElementById('status-chip');
   sc.className='status-chip s-'+state.statusType;
   sc.innerHTML=`<span class="sdot"></span><span>${state.statusLabel}</span>`;
@@ -888,6 +946,7 @@ function goTo(sec){
   const t=document.getElementById('section-'+sec);if(t)t.classList.add('active');
   if(sec==='gallery'&&!currentFolderId)renderGalleryFolders();
   renderNav();
+  if(loggedIn)updateAdminBar();
 }
 
 // ═══ MOBILE SIDEBAR ═══
@@ -912,8 +971,10 @@ document.getElementById('status-chip').addEventListener('click',()=>{
   save();render();
 });
 
-// ═══ PASSWORD ═══
+// ═══ PASSWORD + SESSION ═══
 const DEFAULT_PW='subarna123';
+let loggedIn=false;
+
 async function hashPw(pw){
   const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(pw));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
@@ -921,70 +982,147 @@ async function hashPw(pw){
 async function getHash(){return localStorage.getItem('sb_pw')||await hashPw(DEFAULT_PW);}
 async function verifyPw(pw){return await hashPw(pw)===await getHash();}
 
-// Secret triggers
-let kbuf='';
-document.addEventListener('keydown',e=>{
-  if(e.target.matches('input,textarea,[contenteditable="true"]'))return;
-  kbuf=(kbuf+e.key.toLowerCase()).slice(-6);
-  if(kbuf.endsWith('zzz')){kbuf='';openPwModal();}
-});
-let avN=0,avT;
-document.getElementById('av-wrap').addEventListener('click',()=>{
-  if(editMode)return;
-  avN++;clearTimeout(avT);avT=setTimeout(()=>avN=0,3000);
-  if(avN>=5){avN=0;openPwModal();}
-});
-function checkHash(){if(window.location.hash==='#admin'){history.replaceState(null,'',window.location.pathname);setTimeout(openPwModal,300);}}
-checkHash();
-window.addEventListener('hashchange',checkHash);
+// Session: remember login for this browser tab
+function saveSession(){sessionStorage.setItem('sb_admin','1');}
+function clearSession(){sessionStorage.removeItem('sb_admin');}
+function hasSession(){return sessionStorage.getItem('sb_admin')==='1';}
 
-function openPwModal(){
-  if(editMode){exitEdit();return;}
+// ─── OPEN LOGIN SCREEN ───
+function openLogin(){
+  const screen=document.getElementById('login-screen');
   const inp=document.getElementById('pw-inp');
   const err=document.getElementById('pw-err');
   inp.value='';inp.type='password';
   document.getElementById('pw-eye').textContent='👁';
   err.classList.remove('show');inp.classList.remove('shake');
-  document.getElementById('pw-bg').classList.add('open');
+  // Show user's photo on login card
+  const avImg=document.getElementById('login-av-img');
+  avImg.src=state.photo||mono(state.profileName,72);
+  document.getElementById('login-site-name').textContent=state.pageTitle||state.profileName;
+  screen.classList.add('open');
   setTimeout(()=>inp.focus(),80);
 }
-async function tryUnlock(){
+
+function closeLogin(){
+  document.getElementById('login-screen').classList.remove('open');
+  history.replaceState(null,'',window.location.pathname);
+}
+
+// ─── LOGIN SUBMIT ───
+async function tryLogin(){
   const inp=document.getElementById('pw-inp');
   const err=document.getElementById('pw-err');
   const val=inp.value.trim();
   if(!val){inp.classList.add('shake');setTimeout(()=>inp.classList.remove('shake'),400);return;}
-  if(await verifyPw(val)){
-    document.getElementById('pw-bg').classList.remove('open');
-    enterEdit();
+  const btn=document.getElementById('pw-submit');
+  btn.textContent='Checking...';btn.disabled=true;
+  const ok=await verifyPw(val);
+  btn.textContent='Sign in →';btn.disabled=false;
+  if(ok){
+    saveSession();
+    closeLogin();
+    activateAdmin();
+    toast('Welcome back! 👋');
   }else{
     inp.value='';inp.classList.add('shake');err.classList.add('show');
     setTimeout(()=>inp.classList.remove('shake'),400);inp.focus();
   }
 }
-document.getElementById('pw-submit').addEventListener('click',tryUnlock);
-document.getElementById('pw-cancel').addEventListener('click',()=>document.getElementById('pw-bg').classList.remove('open'));
-document.getElementById('pw-bg').addEventListener('click',e=>{if(e.target===document.getElementById('pw-bg'))document.getElementById('pw-bg').classList.remove('open');});
-document.getElementById('pw-inp').addEventListener('keydown',e=>{if(e.key==='Enter')tryUnlock();if(e.key==='Escape')document.getElementById('pw-bg').classList.remove('open');});
+
+document.getElementById('pw-submit').addEventListener('click',tryLogin);
+document.getElementById('pw-cancel').addEventListener('click',closeLogin);
+document.getElementById('pw-inp').addEventListener('keydown',e=>{
+  if(e.key==='Enter')tryLogin();
+  if(e.key==='Escape')closeLogin();
+});
 document.getElementById('pw-eye').addEventListener('click',()=>{
   const inp=document.getElementById('pw-inp');
   inp.type=inp.type==='password'?'text':'password';
   document.getElementById('pw-eye').textContent=inp.type==='password'?'👁':'🙈';
 });
 
-// ═══ EDIT MODE ═══
+// ─── ADMIN TOOLBAR ───
+function activateAdmin(){
+  loggedIn=true;
+  document.body.classList.add('admin-logged-in');
+  updateAdminBar();
+}
+
+function updateAdminBar(){
+  const editBtn=document.getElementById('ab-edit-btn');
+  const saveBtn=document.getElementById('ab-save-btn');
+  const lbl=document.getElementById('ab-edit-label');
+  if(editMode){
+    editBtn.classList.add('active');
+    lbl.textContent='Editing...';
+    saveBtn.style.display='flex';
+  }else{
+    editBtn.classList.remove('active');
+    lbl.textContent='Edit mode';
+    saveBtn.style.display='none';
+  }
+  // Settings button highlight
+  const settBtn=document.getElementById('ab-settings-btn');
+  settBtn.classList.toggle('active',activeSec==='settings');
+}
+
+document.getElementById('ab-edit-btn').addEventListener('click',()=>{
+  if(!editMode) enterEdit();
+  else exitEdit();
+});
+
+document.getElementById('ab-save-btn').addEventListener('click',exitEdit);
+
+document.getElementById('ab-settings-btn').addEventListener('click',()=>{
+  if(activeSec==='settings'){goTo('home');}
+  else{goTo('settings');}
+  updateAdminBar();
+});
+
+document.getElementById('ab-logout-btn').addEventListener('click',()=>{
+  if(editMode)exitEdit();
+  clearSession();loggedIn=false;
+  document.body.classList.remove('admin-logged-in','edit-mode');
+  editMode=false;
+  document.querySelectorAll('[contenteditable]').forEach(e=>e.contentEditable='false');
+  if(activeSec==='settings')goTo('home');
+  renderNav();render();
+  toast('Logged out');
+});
+
+// ─── URL TRIGGER: yoursite.com/#admin ───
+function checkAdminHash(){
+  if(window.location.hash==='#admin'){
+    history.replaceState(null,'',window.location.pathname);
+    setTimeout(openLogin,200);
+  }
+}
+checkAdminHash();
+window.addEventListener('hashchange',checkAdminHash);
+
+// ─── EDIT MODE ───
 function enterEdit(){
+  if(!loggedIn)return;
   editMode=true;document.body.classList.add('edit-mode');
   document.querySelectorAll('[contenteditable]').forEach(e=>e.contentEditable='true');
-  renderNav();toast('🔓 Edit mode — click ✓ to save');
+  renderNav();updateAdminBar();
 }
+
 function exitEdit(){
   collectEdits();save();
   editMode=false;document.body.classList.remove('edit-mode');
   document.querySelectorAll('[contenteditable]').forEach(e=>e.contentEditable='false');
   if(activeSec==='settings')goTo('home');
-  renderNav();render();toast('All changes saved ✓');
+  renderNav();render();updateAdminBar();
+  toast('All changes saved ✓');
 }
-document.getElementById('edit-fab').addEventListener('click',exitEdit);
+
+// old FAB no longer needed but keep listener safe
+const fab=document.getElementById('edit-fab');
+if(fab)fab.addEventListener('click',exitEdit);
+
+// ─── AUTO-LOGIN if session exists ───
+if(hasSession()){activateAdmin();}
 
 function collectEdits(){
   state.profileName=gT('el-pname');state.handle=gT('el-handle');
